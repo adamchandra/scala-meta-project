@@ -1,0 +1,37 @@
+[WARN] [2010-09-21 18:39:39,402] [Thread-290] s.s.a.c.Config$: 
+Can't load 'akka.conf'.
+One of the three ways of locating the 'akka.conf' file needs to be defined:
+	1. Define the '-Dakka.config=...' system property option.
+	2. Put the 'akka.conf' file on the classpath.
+	3. Define 'AKKA_HOME' environment variable pointing to the root of the Akka distribution.
+I have no way of finding the 'akka.conf' configuration file.
+Using default values everywhere.
+[DEBUG] [2010-09-21 18:39:39,623] [Thread-290] s.s.a.d.Dispatchers$globalExecutorBasedEventDrivenDispatcher$: Creating a se.scalablesolutions.akka.dispatch.Dispatchers$globalExecutorBasedEventDrivenDispatcher$ with config [core-pool:16,max-pool:128,timeout:60000,allowCoreTimeout:false,rejectPolicy:CallerRunsPolicy]
+[DEBUG] [2010-09-21 18:39:39,701] [Thread-290] s.s.a.d.Dispatchers$globalExecutorBasedEventDrivenDispatcher$: Starting up ExecutorBasedEventDrivenDispatcher[akka:event-driven:dispatcher:global]
+	with throughput [5]
+[WARN] [2010-09-21 18:41:02,119] [Thread-300] s.s.a.c.Config$: 
+Can't load 'akka.conf'.
+One of the three ways of locating the 'akka.conf' file needs to be defined:
+	1. Define the '-Dakka.config=...' system property option.
+	2. Put the 'akka.conf' file on the classpath.
+	3. Define 'AKKA_HOME' environment variable pointing to the root of the Akka distribution.
+I have no way of finding the 'akka.conf' configuration file.
+Using default values everywhere.
+[DEBUG] [2010-09-21 18:41:02,245] [Thread-300] s.s.a.d.Dispatchers$globalExecutorBasedEventDrivenDispatcher$: Creating a se.scalablesolutions.akka.dispatch.Dispatchers$globalExecutorBasedEventDrivenDispatcher$ with config [core-pool:16,max-pool:128,timeout:60000,allowCoreTimeout:false,rejectPolicy:CallerRunsPolicy]
+[DEBUG] [2010-09-21 18:41:02,313] [Thread-300] s.s.a.d.Dispatchers$globalExecutorBasedEventDrivenDispatcher$: Starting up ExecutorBasedEventDrivenDispatcher[akka:event-driven:dispatcher:global]
+	with throughput [5]
+[WARN] [2010-09-21 18:42:38,937] [Thread-310] s.s.a.c.Config$: 
+Can't load 'akka.conf'.
+One of the three ways of locating the 'akka.conf' file needs to be defined:
+	1. Define the '-Dakka.config=...' system property option.
+	2. Put the 'akka.conf' file on the classpath.
+	3. Define 'AKKA_HOME' environment variable pointing to the root of the Akka distribution.
+I have no way of finding the 'akka.conf' configuration file.
+Using default values everywhere.
+[DEBUG] [2010-09-21 18:42:39,061] [Thread-310] s.s.a.d.Dispatchers$globalExecutorBasedEventDrivenDispatcher$: Creating a se.scalablesolutions.akka.dispatch.Dispatchers$globalExecutorBasedEventDrivenDispatcher$ with config [core-pool:16,max-pool:128,timeout:60000,allowCoreTimeout:false,rejectPolicy:CallerRunsPolicy]
+[DEBUG] [2010-09-21 18:42:39,130] [Thread-310] s.s.a.d.Dispatchers$globalExecutorBasedEventDrivenDispatcher$: Starting up ExecutorBasedEventDrivenDispatcher[akka:event-driven:dispatcher:global]
+	with throughput [5]
+[INFO] [2010-09-21 18:43:17,471] [Thread-320] s.s.a.c.Config$: Config loaded from the application classpath.
+[DEBUG] [2010-09-21 18:43:17,701] [Thread-320] s.s.a.d.Dispatchers$globalExecutorBasedEventDrivenDispatcher$: Creating a se.scalablesolutions.akka.dispatch.Dispatchers$globalExecutorBasedEventDrivenDispatcher$ with config [core-pool:16,max-pool:128,timeout:60000,allowCoreTimeout:false,rejectPolicy:CallerRunsPolicy]
+[DEBUG] [2010-09-21 18:43:17,953] [Thread-320] s.s.a.d.Dispatchers$globalExecutorBasedEventDrivenDispatcher$: Starting up ExecutorBasedEventDrivenDispatcher[akka:event-driven:dispatcher:global]
+	with throughput [5]

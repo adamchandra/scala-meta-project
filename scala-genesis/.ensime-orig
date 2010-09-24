@@ -1,0 +1,9 @@
+(
+ :server-root "/usr/dan/users3/saunders/projects/emacs-support/site-lisp/ensime/" 
+ :project-package "mongofs.MongoScratch" 
+ :use-sbt t 
+ :sbt-compile-on-save t
+ :runtime-dependency-jars ("/usr/sen/tmp1/saunders/adams-worldview/managed-repos/scala-meta-project/metabits/genesis/lib_managed/scala_2.8.0/compile")
+ ;; :sbt-compile-conf "compile" 
+ ;; :sbt-runtime-conf "compile"
+ )
