@@ -100,6 +100,7 @@ class MetaProject(info: ProjectInfo) extends DefaultProject(info) {
   lazy val ASPECTWERKZ_VERSION   = "2.2.1"
   lazy val JETTY_VERSION         = "7.1.4.v20100610"
   lazy val AKKA_VERSION          = "0.10"
+  lazy val SCALACHECK_VERSION    = "1.7"
 
   // -------------------------------------------------------------------------------------------------------------------
   // Dependencies
@@ -191,13 +192,15 @@ class MetaProject(info: ProjectInfo) extends DefaultProject(info) {
     // lazy val scalajCollection = "org.scalaj" % "scalaj-collection_2.8.0" % "1.0"
 
     // Test
-    lazy val cassandra_clhm   = "org.apache.cassandra"   % "clhm-production"     % CASSANDRA_VERSION % "test"
-    lazy val hadoop_test      = "org.apache.hadoop"      % "hadoop-test"         % "0.20.2"          % "test"
-    lazy val hbase_test       = "org.apache.hbase"       % "hbase-test"          % "0.20.6"          % "test"
-    lazy val high_scale       = "org.apache.cassandra"   % "high-scale-lib"      % CASSANDRA_VERSION % "test"
-    lazy val junit            = "junit"                  % "junit"               % "4.8.1"           % "test"
-    lazy val mockito          = "org.mockito"            % "mockito-all"         % "1.8.1"           % "test"
-    lazy val scalatest        = "org.scalatest"          % "scalatest"           % SCALATEST_VERSION % "test"
+    lazy val cassandra_clhm   = "org.apache.cassandra"    % "clhm-production"     % CASSANDRA_VERSION % "test"
+    lazy val hadoop_test      = "org.apache.hadoop"       % "hadoop-test"         % "0.20.2"          % "test"
+    lazy val hbase_test       = "org.apache.hbase"        % "hbase-test"          % "0.20.6"          % "test"
+    lazy val high_scale       = "org.apache.cassandra"    % "high-scale-lib"      % CASSANDRA_VERSION % "test"
+    lazy val junit            = "junit"                   % "junit"               % "4.8.1"           % "test"
+    lazy val mockito          = "org.mockito"             % "mockito-all"         % "1.8.1"           % "test"
+    lazy val scalatest        = "org.scalatest"           % "scalatest"           % SCALATEST_VERSION % "test"
+    lazy val scalacheck       = "org.scala-tools.testing" % "scalacheck_2.8.0"    % SCALACHECK_VERSION
+
   }
 
   // ------------------------------------------------------------
@@ -216,32 +219,47 @@ class MetaProject(info: ProjectInfo) extends DefaultProject(info) {
   // -------------------------------------------------------------------------------------------------------------------
 
   // lazy val subproj = project("proj-name", "proj-path", new SubProject(_), dep_proj, dep_proj,...)
-  lazy val scalaGenesis       = project("scala-genesis", "scala-genesis", new ScalaGenesisProject(_))
-  lazy val spidie             = project("spidie", "spidie", new SpidieProject(_))
-  lazy val robotRulesParser   = project("robot-rules-parser", "robot-rules-parser", new RobotRulesParserProject(_))
-  lazy val robotRulesParser   = project("tonys-option-exercise", "tonys-option-exercise", new TonysOptionExerciseProject(_))
+  lazy val scalaGenesis         = project("scala-genesis", "scala-genesis", new ScalaGenesisProject(_))
 
   class ScalaGenesisProject(info: ProjectInfo) extends DefaultSubProject(info, distPath) {
-    val mongoj = Dependencies.mongoj 
-    val mongos = Dependencies.mongos 
-    val process = Dependencies.sbt_process 
-    val junit = Dependencies.junit 
-    val scalatest = Dependencies.scalatest 
+    val mongoj = Dependencies.mongoj
+    val mongos = Dependencies.mongos
+    val process = Dependencies.sbt_process
+    val junit = Dependencies.junit
+    val scalatest = Dependencies.scalatest
     val akkaCore = Dependencies.akkaCore
   }
 
+  lazy val spidie               = project("spidie", "spidie", new SpidieProject(_))
   class SpidieProject(info: ProjectInfo) extends DefaultSubProject(info, distPath) {
-    val mongoj = Dependencies.mongoj 
-    val mongos = Dependencies.mongos 
+    val mongoj = Dependencies.mongoj
+    val mongos = Dependencies.mongos
     val tagsoup = Dependencies.tagsoup
   }
 
+  lazy val robotRulesParser     = project("robot-rules-parser", "robot-rules-parser", new RobotRulesParserProject(_))
   class RobotRulesParserProject(info: ProjectInfo) extends DefaultSubProject(info, distPath) {
     val log4j = Dependencies.log4j
   }
 
-  class TonysOptionExerciseProject(info: ProjectInfo) extends DefaultSubProject(info, distPath) {
+  lazy val tonysOptionExercises = project("tonys-option-exercises", "tonys-option-exercises", new TonysOptionExercisesProject(_))
+  class TonysOptionExercisesProject(info: ProjectInfo) extends DefaultSubProject(info, distPath) {
+    val junit = Dependencies.junit
+    val scalatest = Dependencies.scalatest
+    val scalacheck = Dependencies.scalacheck
     val log4j = Dependencies.log4j
   }
+
+  lazy val dynamicProgrammingEx = project("dynamic-programming-ex", "dynamic-programming-ex", new DynamicProgrammingEx(_))
+  class DynamicProgrammingEx(info: ProjectInfo) extends DefaultSubProject(info, distPath) {
+    val junit = Dependencies.junit
+    val scalatest = Dependencies.scalatest
+  }
+
+  //class PlaygroundProject(info: ProjectInfo) extends DefaultSubProject(info, distPath) {
+  //  val junit = Dependencies.junit
+  //  val scalatest = Dependencies.scalatest
+  //  val log4j = Dependencies.log4j
+  //}
 
 }
