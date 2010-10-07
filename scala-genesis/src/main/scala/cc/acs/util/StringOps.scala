@@ -10,6 +10,7 @@ object StringOps  {
     val lls = for (l <- lines.iterator if l.trim() != "") yield l
     lls.toArray
   }
+
   // comma, whitespace separated values
   def csv(s:String): Array[String] = "\\s*,\\s*".r.split(s.trim())
   def wsv(s:String): Array[String] = "\\s+".r.split(s.trim())
