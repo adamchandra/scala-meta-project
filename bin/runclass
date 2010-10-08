@@ -1,0 +1,26 @@
+#!/bin/bash
+
+BOOT="project/boot/scala-2.8.0/"
+
+
+PROJ=
+CLSS=
+while getopts "p:c:" name; do
+    case $name in
+        p)    PROJ=$OPTARG;;
+        c)    CLSS=$OPTARG;;
+        [?])  usage $0;;
+    esac
+done 
+
+CP="$BOOT/lib/scala-library.jar"
+CP="$CP:$BOOT/lib/scala-compiler.jar"
+
+for JAR in $PROJ/lib_managed/scala_2.8.0/runtime/*.jar
+do
+    CP="$CP:$JAR"
+done
+
+CP="$CP:$PROJ/target/scala_2.8.0/classes"
+
+exec java -cp $CP $CLSS
