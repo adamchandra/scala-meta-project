@@ -128,7 +128,7 @@ object MongoScratch extends Application {
 	// def !!< = getString(None, true)
 	// def !!<(log: Logger) = getString(Some(log), true)
 
-  import cc.acs.util.Hash
+  import cc.acs.commons.util.Hash
   
   def sha1sum(f: File) = Hash.toHex(Hash("SHA1", f))
 

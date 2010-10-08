@@ -1,8 +1,8 @@
 package cc.acs
 
 import java.io.File
-import cc.acs.util.FileOps._
-import cc.acs.util.StringOps._
+import cc.acs.commons.util.FileOps._
+import cc.acs.commons.util.StringOps._
 import scala.collection.mutable.{HashMap => Map}
 import scala.collection.MapLike
 import scala.io.Source

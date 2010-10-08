@@ -120,76 +120,73 @@ class MetaProject(info: ProjectInfo) extends DefaultProject(info) {
     lazy val akkaRedis                 = akkaModule("persistence-redis")
     lazy val akkaSpring                = akkaModule("spring")
 
-    lazy val annotation                = "javax.annotation"            % "jsr250-api" % "1.0" % "compile"
-    lazy val aopalliance               = "aopalliance"                 % "aopalliance" % "1.0" % "compile"
-    lazy val atmo                      = "org.atmosphere"              % "atmosphere-annotations"     % ATMO_VERSION % "compile"
-    lazy val atmo_jbossweb             = "org.atmosphere"              % "atmosphere-compat-jbossweb" % ATMO_VERSION % "compile"
-    lazy val atmo_jersey               = "org.atmosphere"              % "atmosphere-jersey"          % ATMO_VERSION % "compile"
-    lazy val atmo_runtime              = "org.atmosphere"              % "atmosphere-runtime"         % ATMO_VERSION % "compile"
-    lazy val atmo_tomcat               = "org.atmosphere"              % "atmosphere-compat-tomcat"   % ATMO_VERSION % "compile"
-    lazy val atmo_weblogic             = "org.atmosphere"              % "atmosphere-compat-weblogic" % ATMO_VERSION % "compile"
-    lazy val atomikos_transactions     = "com.atomikos"                % "transactions"     % "3.2.3" % "compile"
-    lazy val atomikos_transactions_api = "com.atomikos"                % "transactions-api" % "3.2.3" % "compile"
-    lazy val atomikos_transactions_jta = "com.atomikos"                % "transactions-jta" % "3.2.3" % "compile"
-    lazy val camel_core                = "org.apache.camel"            % "camel-core" % CAMEL_VERSION % "compile"
-    lazy val camel_spring              = "org.apache.camel"            % "camel-spring"        % CAMEL_VERSION     % "compile;test"
-    lazy val casbah                    = "com.novus"                   % "casbah_2.8.0" % "1.0.8.5" % "compile"
-    lazy val cassandra                 = "org.apache.cassandra"        % "cassandra" % CASSANDRA_VERSION % "compile"
-    lazy val commons_codec             = "commons-codec"               % "commons-codec" % "1.4" % "compile"
-    lazy val commons_coll              = "commons-collections"         % "commons-collections" % "3.2.1"           % "compile;test"
-    lazy val commons_io                = "commons-io"                  % "commons-io" % "1.4" % "compile"
-    lazy val commons_pool              = "commons-pool"                % "commons-pool" % "1.5.4" % "compile"
-    lazy val configgy                  = "net.lag"                     % "configgy" % "2.8.0-1.5.5" % "compile"
-    lazy val dispatch_http             = "net.databinder"              % "dispatch-http_2.8.0" % DISPATCH_VERSION % "compile"
-    lazy val dispatch_json             = "net.databinder"              % "dispatch-json_2.8.0" % DISPATCH_VERSION % "compile"
-    lazy val google_coll               = "com.google.collections"      % "google-collections"  % "1.0"             % "compile;test"
-    lazy val guicey                    = "org.guiceyfruit"             % "guice-all" % "2.0" % "compile"
-    lazy val h2_lzf                    = "voldemort.store.compress"    % "h2-lzf" % "1.0" % "compile"
-    lazy val hadoop_core               = "org.apache.hadoop"           % "hadoop-core" % "0.20.2" % "compile"
-    lazy val hawtdispatch              = "org.fusesource.hawtdispatch" % "hawtdispatch-scala" % HAWT_DISPATCH_VERSION % "compile"
-    lazy val hbase_core                = "org.apache.hbase"            % "hbase-core" % "0.20.6" % "compile"
-    lazy val jackson                   = "org.codehaus.jackson"        % "jackson-mapper-asl" % JACKSON_VERSION % "compile"
-    lazy val jackson_core              = "org.codehaus.jackson"        % "jackson-core-asl"   % JACKSON_VERSION % "compile"
-    lazy val jackson_core_asl          = "org.codehaus.jackson"        % "jackson-core-asl"   % JACKSON_VERSION % "compile"
-    lazy val jersey                    = "com.sun.jersey"              % "jersey-core"   % JERSEY_VERSION % "compile"
-    lazy val jersey_contrib            = "com.sun.jersey.contribs"     % "jersey-scala"  % JERSEY_VERSION % "compile"
-    lazy val jersey_json               = "com.sun.jersey"              % "jersey-json"   % JERSEY_VERSION % "compile"
-    lazy val jersey_server             = "com.sun.jersey"              % "jersey-server" % JERSEY_VERSION % "compile"
-    lazy val jetty                     = "org.eclipse.jetty"           % "jetty-server"  % JETTY_VERSION % "compile"
-    lazy val jetty_servlet             = "org.eclipse.jetty"           % "jetty-servlet" % JETTY_VERSION % "compile"
-    lazy val jetty_util                = "org.eclipse.jetty"           % "jetty-util"    % JETTY_VERSION % "compile"
-    lazy val jetty_xml                 = "org.eclipse.jetty"           % "jetty-xml"     % JETTY_VERSION % "compile"
-    lazy val jgroups                   = "jgroups"                     % "jgroups" % "2.9.0.GA" % "compile"
-    lazy val jsr166x                   = "jsr166x"                     % "jsr166x" % "1.0" % "compile"
-    lazy val jsr250                    = "javax.annotation"            % "jsr250-api" % "1.0" % "compile"
-    lazy val jsr311                    = "javax.ws.rs"                 % "jsr311-api" % "1.1" % "compile"
-    lazy val jta_1_1                   = "org.apache.geronimo.specs"   % "geronimo-jta_1.1_spec" % "1.1.1" % "compile" intransitive
-    lazy val log4j                     = "log4j"                       % "log4j"               % "1.2.16"          % "compile;test"
-    lazy val logback                   = "ch.qos.logback"              % "logback-classic" % LOGBACK_VERSION % "compile"
-    lazy val logback_core              = "ch.qos.logback"              % "logback-core" % LOGBACK_VERSION % "compile"
-    lazy val mongoj                    = "org.mongodb"                 % "mongo-java-driver" % "2.1" % "compile;runtime;test"
-    lazy val mongos                    = "Osinka.com"                  % "mongo-scala-driver_2.8.0" % "0.8.5" % "compile;runtime;test"
-    lazy val multiverse                = "org.multiverse"              % "multiverse-alpha" % MULTIVERSE_VERSION % "compile" intransitive
-    lazy val netty                     = "org.jboss.netty"             % "netty" % "3.2.2.Final" % "compile"
+    lazy val annotation                = "javax.annotation"            % "jsr250-api" % "1.0"
+    lazy val aopalliance               = "aopalliance"                 % "aopalliance" % "1.0"
+    lazy val atmo                      = "org.atmosphere"              % "atmosphere-annotations"     % ATMO_VERSION
+    lazy val atmo_jbossweb             = "org.atmosphere"              % "atmosphere-compat-jbossweb" % ATMO_VERSION
+    lazy val atmo_jersey               = "org.atmosphere"              % "atmosphere-jersey"          % ATMO_VERSION
+    lazy val atmo_runtime              = "org.atmosphere"              % "atmosphere-runtime"         % ATMO_VERSION
+    lazy val atmo_tomcat               = "org.atmosphere"              % "atmosphere-compat-tomcat"   % ATMO_VERSION
+    lazy val atmo_weblogic             = "org.atmosphere"              % "atmosphere-compat-weblogic" % ATMO_VERSION
+    lazy val atomikos_transactions     = "com.atomikos"                % "transactions"     % "3.2.3"
+    lazy val atomikos_transactions_api = "com.atomikos"                % "transactions-api" % "3.2.3"
+    lazy val atomikos_transactions_jta = "com.atomikos"                % "transactions-jta" % "3.2.3"
+    lazy val camel_core                = "org.apache.camel"            % "camel-core" % CAMEL_VERSION
+    lazy val camel_spring              = "org.apache.camel"            % "camel-spring"        % CAMEL_VERSION
+    lazy val casbah                    = "com.novus"                   % "casbah_2.8.0" % "1.0.8.5"
+    lazy val cassandra                 = "org.apache.cassandra"        % "cassandra" % CASSANDRA_VERSION
+    lazy val commons_codec             = "commons-codec"               % "commons-codec" % "1.4"
+    lazy val commons_coll              = "commons-collections"         % "commons-collections" % "3.2.1"
+    lazy val commons_io                = "commons-io"                  % "commons-io" % "1.4"
+    lazy val commons_pool              = "commons-pool"                % "commons-pool" % "1.5.4"
+    lazy val configgy                  = "net.lag"                     % "configgy" % "2.8.0-1.5.5"
+    lazy val dispatch_http             = "net.databinder"              % "dispatch-http_2.8.0" % DISPATCH_VERSION
+    lazy val dispatch_json             = "net.databinder"              % "dispatch-json_2.8.0" % DISPATCH_VERSION
+    lazy val google_coll               = "com.google.collections"      % "google-collections"  % "1.0"
+    lazy val guicey                    = "org.guiceyfruit"             % "guice-all" % "2.0"
+    lazy val h2_lzf                    = "voldemort.store.compress"    % "h2-lzf" % "1.0"
+    lazy val hadoop_core               = "org.apache.hadoop"           % "hadoop-core" % "0.20.2"
+    lazy val hawtdispatch              = "org.fusesource.hawtdispatch" % "hawtdispatch-scala" % HAWT_DISPATCH_VERSION
+    lazy val hbase_core                = "org.apache.hbase"            % "hbase-core" % "0.20.6"
+    lazy val jackson                   = "org.codehaus.jackson"        % "jackson-mapper-asl" % JACKSON_VERSION
+    lazy val jackson_core              = "org.codehaus.jackson"        % "jackson-core-asl"   % JACKSON_VERSION
+    lazy val jackson_core_asl          = "org.codehaus.jackson"        % "jackson-core-asl"   % JACKSON_VERSION
+    lazy val jersey                    = "com.sun.jersey"              % "jersey-core"   % JERSEY_VERSION
+    lazy val jersey_contrib            = "com.sun.jersey.contribs"     % "jersey-scala"  % JERSEY_VERSION
+    lazy val jersey_json               = "com.sun.jersey"              % "jersey-json"   % JERSEY_VERSION
+    lazy val jersey_server             = "com.sun.jersey"              % "jersey-server" % JERSEY_VERSION
+    lazy val jetty                     = "org.eclipse.jetty"           % "jetty-server"  % JETTY_VERSION
+    lazy val jetty_servlet             = "org.eclipse.jetty"           % "jetty-servlet" % JETTY_VERSION
+    lazy val jetty_util                = "org.eclipse.jetty"           % "jetty-util"    % JETTY_VERSION
+    lazy val jetty_xml                 = "org.eclipse.jetty"           % "jetty-xml"     % JETTY_VERSION
+    lazy val jgroups                   = "jgroups"                     % "jgroups" % "2.9.0.GA"
+    lazy val jsr166x                   = "jsr166x"                     % "jsr166x" % "1.0"
+    lazy val jsr250                    = "javax.annotation"            % "jsr250-api" % "1.0"
+    lazy val jsr311                    = "javax.ws.rs"                 % "jsr311-api" % "1.1"
+    lazy val jta_1_1                   = "org.apache.geronimo.specs"   % "geronimo-jta_1.1_spec" % "1.1.1"
+    lazy val log4j                     = "log4j"                       % "log4j"               % "1.2.16"
+    lazy val logback                   = "ch.qos.logback"              % "logback-classic" % LOGBACK_VERSION
+    lazy val logback_core              = "ch.qos.logback"              % "logback-core" % LOGBACK_VERSION
+    lazy val mongoj                    = "org.mongodb"                 % "mongo-java-driver" % "2.1"
+    lazy val mongos                    = "Osinka.com"                  % "mongo-scala-driver_2.8.0" % "0.8.5"
+    lazy val multiverse                = "org.multiverse"              % "multiverse-alpha" % MULTIVERSE_VERSION
+    lazy val netty                     = "org.jboss.netty"             % "netty" % "3.2.2.Final"
     lazy val osgi_core                 = "org.osgi"                    % "org.osgi.core" % "4.2.0"
-    lazy val protobuf                  = "com.google.protobuf"         % "protobuf-java" % "2.3.0" % "compile"
-    lazy val rabbit                    = "com.rabbitmq"                % "amqp-client" % "1.8.1" % "compile"
-    lazy val redis                     = "com.redis"                   % "redisclient" % "2.8.0-2.0" % "compile"
-    lazy val sbinary                   = "sbinary"                     % "sbinary" % "2.8.0-0.3.1" % "compile"
-    lazy val sbt_process               = "org.scala-tools.sbt"         % "process_2.8.0" % "0.1" % "compile;runtime;test"
-    lazy val sjson                     = "sjson.json"                  % "sjson" % "0.8-2.8.0" % "compile"
-    lazy val slf4j                     = "org.slf4j"                   % "slf4j-api"     % SLF4J_VERSION % "compile"
-    lazy val spring_beans              = "org.springframework"         % "spring-beans"   % SPRING_VERSION % "compile"
-    lazy val spring_context            = "org.springframework"         % "spring-context" % SPRING_VERSION % "compile"
-    lazy val stax_api                  = "javax.xml.stream"            % "stax-api" % "1.0-2" % "compile"
-    lazy val tagsoup                   = "org.ccil.cowan"              % "tagsoup" % "1.2" % "compile"
-    lazy val thrift                    = "com.facebook"                % "thrift" % "r917130" % "compile"
-    lazy val werkz                     = "org.codehaus.aspectwerkz"    % "aspectwerkz-nodeps-jdk5" % ASPECTWERKZ_VERSION % "compile"
-    lazy val werkz_core                = "org.codehaus.aspectwerkz"    % "aspectwerkz-jdk5"        % ASPECTWERKZ_VERSION % "compile"
-    lazy val zookeeper                 = "org.apache.hadoop.zookeeper" % "zookeeper" % "3.2.2" % "compile"
-
-    // lazy val scalaTime = "org.scala-tools" % "time" % "2.8.0-0.2-SNAPSHOT"
-    // lazy val scalajCollection = "org.scalaj" % "scalaj-collection_2.8.0" % "1.0"
+    lazy val protobuf                  = "com.google.protobuf"         % "protobuf-java" % "2.3.0"
+    lazy val rabbit                    = "com.rabbitmq"                % "amqp-client" % "1.8.1"
+    lazy val redis                     = "com.redis"                   % "redisclient" % "2.8.0-2.0"
+    lazy val sbinary                   = "sbinary"                     % "sbinary" % "2.8.0-0.3.1"
+    lazy val sbt_process               = "org.scala-tools.sbt"         % "process_2.8.0" % "0.1"
+    lazy val sjson                     = "sjson.json"                  % "sjson" % "0.8-2.8.0"
+    lazy val slf4j                     = "org.slf4j"                   % "slf4j-api"     % SLF4J_VERSION
+    lazy val spring_beans              = "org.springframework"         % "spring-beans"   % SPRING_VERSION
+    lazy val spring_context            = "org.springframework"         % "spring-context" % SPRING_VERSION
+    lazy val stax_api                  = "javax.xml.stream"            % "stax-api" % "1.0-2"
+    lazy val tagsoup                   = "org.ccil.cowan"              % "tagsoup" % "1.2"
+    lazy val thrift                    = "com.facebook"                % "thrift" % "r917130"
+    lazy val werkz                     = "org.codehaus.aspectwerkz"    % "aspectwerkz-nodeps-jdk5" % ASPECTWERKZ_VERSION
+    lazy val werkz_core                = "org.codehaus.aspectwerkz"    % "aspectwerkz-jdk5"        % ASPECTWERKZ_VERSION
+    lazy val zookeeper                 = "org.apache.hadoop.zookeeper" % "zookeeper" % "3.2.2"
 
     // Test
     lazy val cassandra_clhm   = "org.apache.cassandra"    % "clhm-production"     % CASSANDRA_VERSION % "test"
@@ -199,8 +196,12 @@ class MetaProject(info: ProjectInfo) extends DefaultProject(info) {
     lazy val junit            = "junit"                   % "junit"               % "4.8.1"           % "test"
     lazy val mockito          = "org.mockito"             % "mockito-all"         % "1.8.1"           % "test"
     lazy val scalatest        = "org.scalatest"           % "scalatest"           % SCALATEST_VERSION % "test"
-    lazy val scalacheck       = "org.scala-tools.testing" % "scalacheck_2.8.0"    % SCALACHECK_VERSION
+    lazy val scalacheck       = "org.scala-tools.testing" % "scalacheck_2.8.0"    % SCALACHECK_VERSION % "test"
 
+
+    // Local projects
+    lazy val scalaGenesis    = "cc.acs" % "scala-genesis_2.8.0" % "0.1"
+    lazy val acsCommons      = "cc.acs" % "acs-commons_2.8.0"   % "0.1"
   }
 
   // ------------------------------------------------------------
@@ -214,6 +215,7 @@ class MetaProject(info: ProjectInfo) extends DefaultProject(info) {
     override def packageToPublishActions = super.packageToPublishActions ++ Seq(this.packageDocs, this.packageSrc)
   }
 
+
   // -------------------------------------------------------------------------------------------------------------------
   // Subprojects
   // -------------------------------------------------------------------------------------------------------------------
@@ -222,24 +224,23 @@ class MetaProject(info: ProjectInfo) extends DefaultProject(info) {
   lazy val scalaGenesis         = project("scala-genesis", "scala-genesis", new ScalaGenesisProject(_))
 
   class ScalaGenesisProject(info: ProjectInfo) extends DefaultSubProject(info, distPath) {
-    val mongoj = Dependencies.mongoj
-    val mongos = Dependencies.mongos
-    val process = Dependencies.sbt_process
+    val akkaCore = Dependencies.akkaCore % "compile;runtime;test"
+    val acsCommons   = Dependencies.acsCommons     % "compile;runtime;test"
+
     val junit = Dependencies.junit
     val scalatest = Dependencies.scalatest
-    val akkaCore = Dependencies.akkaCore
   }
 
   lazy val spidie               = project("spidie", "spidie", new SpidieProject(_))
   class SpidieProject(info: ProjectInfo) extends DefaultSubProject(info, distPath) {
-    val mongoj = Dependencies.mongoj
-    val mongos = Dependencies.mongos
-    val tagsoup = Dependencies.tagsoup
+    val mongoj = Dependencies.mongoj % "compile;runtime;test"
+    val mongos = Dependencies.mongos % "compile;runtime;test"
+    val tagsoup = Dependencies.tagsoup % "compile;runtime;test"
   }
 
   lazy val robotRulesParser     = project("robot-rules-parser", "robot-rules-parser", new RobotRulesParserProject(_))
   class RobotRulesParserProject(info: ProjectInfo) extends DefaultSubProject(info, distPath) {
-    val log4j = Dependencies.log4j
+    val log4j = Dependencies.log4j % "compile;runtime;test"
   }
 
   lazy val tonysOptionExercises = project("tonys-option-exercises", "tonys-option-exercises", new TonysOptionExercisesProject(_))
@@ -252,20 +253,38 @@ class MetaProject(info: ProjectInfo) extends DefaultProject(info) {
 
   lazy val dynamicProgrammingEx = project("dynamic-programming-ex", "dynamic-programming-ex", new DynamicProgrammingEx(_))
   class DynamicProgrammingEx(info: ProjectInfo) extends DefaultSubProject(info, distPath) {
+    val junit = Dependencies.junit 
+    val scalatest = Dependencies.scalatest 
+  }
+
+  lazy val mongridfsProject = project("mongridfs", "mongridfs", new MongridfsProject(_))
+  class MongridfsProject(info: ProjectInfo) extends DefaultSubProject(info, distPath) {
+    val mongoj = Dependencies.mongoj               % "compile;runtime;test"
+    val mongos = Dependencies.mongos               % "compile;runtime;test"
+    val process = Dependencies.sbt_process         % "compile;runtime;test"
+    val akkaCore = Dependencies.akkaCore           % "compile;runtime;test"
+    val acsCommons   = Dependencies.acsCommons     % "compile;runtime;test"
+
+    val junit = Dependencies.junit           
+    val scalatest = Dependencies.scalatest   
+  }
+
+  lazy val acsCommonsProject = project("acs-commons", "acs-commons", new AcsCommonsProject(_))
+  class AcsCommonsProject(info: ProjectInfo) extends DefaultSubProject(info, distPath) {
+    val scalatest = Dependencies.scalatest 
     val junit = Dependencies.junit
-    val scalatest = Dependencies.scalatest
   }
 
   //class PlaygroundProject(info: ProjectInfo) extends DefaultSubProject(info, distPath) {
-  //  val junit = Dependencies.junit
-  //  val scalatest = Dependencies.scalatest
+  //  val junit = Dependencies.junit % "compile;test"
+  //  val scalatest = Dependencies.scalatest % "compile;test"
   //  val log4j = Dependencies.log4j
   //}
 
 }
 
 trait RunRegex {
-  self: DefaultProject => 
+  self: DefaultProject =>
 	def getMainClassByRegex(str: String): Option[String] = getMainClassByRegex(str, mainCompileConditional)
 	def getMainClassByRegex(str: String, compileConditional: CompileConditional): Option[String] = {
     import scala.util.matching.Regex
@@ -287,7 +306,7 @@ trait RunRegex {
     }
 	}
 
-	protected def runByRegexAction = task { 
+	protected def runByRegexAction = task {
     args => args.toList match {
       case x :: xs =>  runTask(getMainClassByRegex(x.toString), runClasspath, xs) dependsOn(compile, copyResources)
       case _       =>  runTask(getMainClass(true), runClasspath, args) dependsOn(compile, copyResources)

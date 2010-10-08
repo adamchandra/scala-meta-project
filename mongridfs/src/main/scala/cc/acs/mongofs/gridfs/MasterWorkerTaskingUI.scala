@@ -1,6 +1,6 @@
 package cc.acs.mongofs.gridfs
 
-import cc.acs.util.StringOps._
+import cc.acs.commons.util.StringOps._
 import scala.collection.JavaConversions._
 
 object MasterWorkerTaskingUI {
@@ -8,10 +8,10 @@ object MasterWorkerTaskingUI {
   def main(args: Array[String]) {
     val opts = argsToMap(args)
     val defaults = Map(
-      "master"         -> List(""),
-      "worker"         -> List(""),
-      "host"       -> List("localhost"),
-      "port"       -> List("")
+      "master"     -> List(),
+      "worker"     -> List(),
+      "host"       -> List(),
+      "port"       -> List()
       )
 
     // new MasterWorkerTaskingUI(opts ++ defaults)()
@@ -19,15 +19,16 @@ object MasterWorkerTaskingUI {
 }
 
 class MasterWorkerTaskingUI(options: Map[String, List[String]]) {
-  import cc.acs.util.Hash
+  import cc.acs.commons.util.Hash
 
   import com.mongodb.Mongo
 
+  // todo push this into Corpus
   def dbname = options("db").head
   def collection = "corpus." + options("collection").head
   def mongodb = new Mongo().getDB(dbname)
-  val gridfs: GridFS = new GridFS(mongodb, collection)
-  val corpus = new Corpus(dbname)
+  lazy val gridfs: GridFS = new GridFS(mongodb, collection)
+  lazy val corpus = new Corpus(dbname)
  
   // def apply() {
   //   List("master"   -> startMaster _,

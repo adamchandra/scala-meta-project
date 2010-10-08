@@ -8,7 +8,7 @@ import scala.collection.mutable.ListBuffer
 import org.junit.Assert._
 import org.junit.Test
 import org.junit.Before
-import cc.acs.util.StringOps._
+import cc.acs.commons.util.StringOps._
 
 
 class StringOps extends FunSuite with AssertionsForJUnit {

@@ -10,8 +10,8 @@ import org.junit.BeforeClass
 
 // todo rename this or break it up into other specs
 class AkkaActorSpec extends FunSuite with AssertionsForJUnit with BeforeAndAfterAll {
-  import cc.acs.util.StringOps._
-  import cc.acs.util.FileOps._
+  import cc.acs.commons.util.StringOps._
+  import cc.acs.commons.util.FileOps._
 
   import se.scalablesolutions.akka.actor.Actor
   import se.scalablesolutions.akka.actor.Actor._

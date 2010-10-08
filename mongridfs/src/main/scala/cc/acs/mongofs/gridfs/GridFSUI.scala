@@ -1,6 +1,7 @@
 package cc.acs.mongofs.gridfs
 
-import cc.acs.util.StringOps._
+import cc.acs.commons.util.StringOps._
+import cc.acs.commons.util.LangUtils.dictMerge
 
 import scala.collection.JavaConversions._
 
@@ -9,42 +10,44 @@ object GridFSUI {
   def main(args: Array[String]) {
     val opts = argsToMap(args)
     val defaults = Map(
-      "db"         -> List("rexa"),
-      // "collection" -> List(),
+      "db"         -> List(),
+      "collection" -> List(),
       "host"       -> List("localhost"),
-      "port"       -> List("")
-      )
+      "port"       -> List()
+    )
 
     // todo ensure unique index on filename
     // in java:  _chunkCollection.ensureIndex( BasicDBObjectBuilder.start().add( "files_id" , 1 ).add( "n" , 1 ).get() );
 
-    new GridFSUI(opts ++ defaults)()
+    new GridFSUI(dictMerge(opts, defaults))()
   }
 }
 
 class GridFSUI(options: Map[String, List[String]]) {
-  import cc.acs.util.Hash
+  import cc.acs.commons.util.Hash
 
   import com.mongodb.Mongo
 
   def dbname = options("db").head
   def collection = "corpus." + options("collection").head
   def mongodb = new Mongo().getDB(dbname)
-  val gridfs: GridFS = new GridFS(mongodb, collection)
-  val corpus = new Corpus(dbname)
+  lazy val gridfs: GridFS = new GridFS(mongodb, collection)
+  lazy val corpus = new Corpus(dbname)
  
+  def printArgs = {
+    println(options.mkString("{\n  ", "\n  ", "\n}"))
+  }
+
   def apply() {
     List("list"   -> listFiles _,
+         "args"   -> printArgs _,
          "get"    -> get _,
          "put"    -> put _,
          "drop"   -> drop _,
-         "update" -> update _,
          "md5"    -> md5 _,
          "sha"    -> sha1 _
-       ) map { 
-      case (name, fn) =>
-        if (options.contains(name)) fn()
-    }
+       ) map { case (name, fn) =>
+         if (options.contains(name)) fn() }
   }
 
   def listFiles() {
@@ -56,12 +59,12 @@ class GridFSUI(options: Map[String, List[String]]) {
   }
 
   def md5sum(is: java.io.InputStream): String = {
-    import cc.acs.util.{ Hash => Digest }
+    import cc.acs.commons.util.{ Hash => Digest }
     Digest.toHex(Digest("md5", is))
   }
 
   def sha1sum(is: java.io.InputStream): String = {
-    import cc.acs.util.{ Hash => Digest }
+    import cc.acs.commons.util.{ Hash => Digest }
     Digest.toHex(Digest("sha1", is))
   }
 
@@ -79,7 +82,7 @@ class GridFSUI(options: Map[String, List[String]]) {
     println("%40s %-10s".format(md5, f.get("filename")))
   }
 
-  import cc.acs.util.FileOps._
+  import cc.acs.commons.util.FileOps._
   def sha1(f: java.io.File): String = sha1sum(fistream(f))
 
   def maybe[T](t: T): Option[T] = if (t != null) Some(t) else None
@@ -125,9 +128,4 @@ class GridFSUI(options: Map[String, List[String]]) {
     }
   }
 
-  def update() {
-    for (arg <- options("update")) {
-      
-    }
-  }
 }

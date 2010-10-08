@@ -9,7 +9,8 @@ import org.junit.Assert._
 import org.junit.Test
 import org.junit.Before
 import org.junit.BeforeClass
-import cc.acs.util.StringOps._
+import cc.acs.commons.util.StringOps._
+import cc.acs.commons.util.FileOps._
 
 class MongoTaskIterationTest extends FunSuite
 with AssertionsForJUnit 
@@ -19,7 +20,7 @@ with BeforeAndAfterAll {
   import org.bson.types.ObjectId
   import com.osinka.mongodb.DBObjectCollection
   import com.mongodb.DBObject
-  import cc.acs.util.Hash
+  import cc.acs.commons.util.Hash
   import scala.collection.JavaConversions._
   import com.mongodb.Mongo
 
@@ -56,7 +57,6 @@ with BeforeAndAfterAll {
 
   def write(f:GridFSDBFile) = f.writeTo(f.getFilename)
 
-  import cc.acs.util.FileOps._
 
   def write(d:java.io.File, f:GridFSDBFile) {
     println("writing " + file(d, f.getFilename).getPath)

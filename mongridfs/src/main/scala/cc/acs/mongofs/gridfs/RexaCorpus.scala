@@ -13,16 +13,14 @@ class Corpus(dbname: String) {
   import java.net.URL
 
   def mongodb = new Mongo().getDB(dbname)
-  /** Is pdfFiles doc picked up?? */
+
   val pdfFiles: GridFS = new GridFS(mongodb, "corpus.pdf")
-  /* Is pstotextFiles doc picked up?? */
   val pstotextFiles: GridFS = new GridFS(mongodb, "corpus.pstotext")
   val metataggerFiles: GridFS = new GridFS(mongodb, "corpus.metatagger")
 
   val pdfAliases = mongodb.getCollection("corpus.pdf.alias") of PdfAliases
   val pdfAliasColl = mongodb.getCollection("corpus.pdf.alias").asScala
   val pdfFileCollection = mongodb.getCollection("corpus.pdf.files").asScala
-
 
   case class PdfAliases(pdfId:ObjectId, urls:Seq[URL], sha1s:Seq[String]) extends MongoObject
 
@@ -61,36 +59,6 @@ class Corpus(dbname: String) {
       for {pdfId(id)  <- Some(dbo)
            words(w) <- Some(dbo)} yield MetataggerWords(id, w)
   }
-
-  /** This is a paragraph
-   * 
-   * This is another paragraph (note the empty line above) containing '''bold''',
-   * ''italic'',  __underline__, ^superscript^, and ,,subscript,, words.
-   *
-   * {{{
-   * Multi-line code can be inserted as a block and will be printed as monospace
-   * text.
-   * It isn't parsed as Scala, with keyword highlighting, but may be in the
-   * future.
-   * }}}
-   *
-   * In the near future, wiki syntax will also support bullet or number lists as
-   * well as links to the www and to other pages inside the documentation. */
-  def main(args: Array[String]):Unit = {
-    // pdfAliases << PdfAlias(0, "nofile", "invalid-content", new java.util.Date(), List(""))
-    var o = pdfAliases.find()
-    while (o.hasNext()) {
-      println(o.next())
-    }
-    
-    pdfAliasColl << Map("a" -> "b")
-    o = pdfAliases.find()
-    while (o.hasNext()) {
-      println(o.next())
-    }
-    pdfAliases.drop
-  }
-
 
   // rexa.corpus.{pdfs(gfs),           -> id, md5, sha1
   //              pdfs.aliases,        -> pdfs.id, list(url), list(sha1)

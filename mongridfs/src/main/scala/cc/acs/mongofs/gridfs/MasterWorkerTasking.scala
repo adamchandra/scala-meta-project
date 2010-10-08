@@ -5,7 +5,7 @@ import org.bson.types.ObjectId
 import com.osinka.mongodb.DBObjectCollection
 import com.mongodb.DBObject
 
-import cc.acs.util.Hash
+import cc.acs.commons.util.Hash
 
 import scala.collection.JavaConversions._
 import com.mongodb.Mongo
