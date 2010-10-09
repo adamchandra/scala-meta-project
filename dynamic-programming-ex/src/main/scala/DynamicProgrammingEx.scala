@@ -1,105 +1,82 @@
-// Most exercises taken from : http://people.csail.mit.edu/bdean/6.046/dp/
 
-/*  
-object MaximumValueContiguousSubsequence {
-  //  1. Maximum Value Contiguous Subsequence. Given a sequence of n real numbers A(1) ... A(n),
-  //  determine a contiguous subsequence A(i) ... A(j) for which the sum of elements in the subsequence
-  //  is maximized.
-  case class ContiguousSeq(start:Int, end:Int, sum:Int) {
-    def + (that:ContiguousSeq): ContiguousSeq = ContiguousSeq(this.start, that.end, this.sum + that.sum)
-    def > (that:ContiguousSeq): Boolean = this.sum > that.sum
-    def == (that:ContiguousSeq): Boolean = this.sum == that.sum
-    def < (that:ContiguousSeq): Boolean = this.sum < that.sum
-  }
+// taken from : http://people.csail.mit.edu/bdean/6.046/dp/
 
-  case class Sequences(max:ContiguousSeq, maxToCurrent:ContiguousSeq, tail:ContiguousSeq)
-
-  def mvcs(seq:Seq[Int]):Sequences = seq.length match {
-    case 0 => null
-    case 1 => {
-      val c = ContiguousSeq(0,1,seq.head)
-      Sequences(c, c, c)
-    }
-    case n => {
-      val prev = mvcs(seq.view(0, seq.length-1))
-      val curr = ContiguousSeq(n-1, n, seq.last)
-
-      val bestTail = 
-        if (prev.tail.end == n-1 && prev.tail + curr > prev.tail)
-          prev.tail + curr
-        else 
-          curr
-
-      val maxToCurrent = prev.maxToCurrent + curr
-
-      val m1 = if (prev.max > bestTail) prev.max else bestTail
-      val max = if (m1 > maxToCurrent) m1 else 
-
-        if (prev.max > bestTail) prev.max else bestTail
-        maxToCurrent
-      Sequences(m2, maxToCurrent, bestTail)
-    }
-  }
-
-  def main(args:Array[String]) = {
-    val trials = List(
-      List(1, 2, 3), 
-      List(1, -1, 1), 
-      List(-1, 3, -1, -1, 3, -1), 
-      Nil
-    )
-    for (t <- trials) {
-      println("mvcs = " + mvcs(t))
-    }
-  }
-
-}
-*/
-
-
-object MaximumValueContiguousSubsequence {
-  //  1. Maximum Value Contiguous Subsequence. Given a sequence of n real numbers A(1) ... A(n),
-  //  determine a contiguous subsequence A(i) ... A(j) for which the sum of elements in the subsequence
-  //  is maximized.
-  case class ContiguousSeq(start:Int, end:Int, sum:Int) {
-    def ++ (value:Int) = ContiguousSeq(start, end+1, sum + value)
-    def > (that:ContiguousSeq): Boolean = this.sum > that.sum
-    def == (that:ContiguousSeq): Boolean = this.sum == that.sum
-    def < (that:ContiguousSeq): Boolean = this.sum < that.sum
-  }
-
-  def mvcs(seq:Seq[Int]):Sequences = {
-    var max = ContiguousSeq(0, 0, seq(1))
-    var current  = ContiguousSeq(0, 0, seq(1))
-    for (i <- seq.drop(1)) {
-      val newcurr = current ++ i
-      if (i > current.sum) 
-        current = ContiguousSeq(curr.end
-      if (current > max) 
-        max = ContiguousSeq(current.start, current.end, current.sum)
-    }
-  }
-
-  def main(args:Array[String]) = {
-    val trials = List(
-      List(1, 2, 3), 
-      List(1, -1, 1), 
-      List(-1, 3, -1, -1, 3, -1), 
-      Nil
-    )
-    for (t <- trials) {
-      println("mvcs = " + mvcs(t))
-    }
-  }
-
-}
-
+//object MaximumValueContiguousSubsequence {
+//  //  1. Maximum Value Contiguous Subsequence. Given a sequence of n real numbers A(1) ... A(n),
+//  //  determine a contiguous subsequence A(i) ... A(j) for which the sum of elements in the subsequence
+//  //  is maximized.
+//  case class ContiguousSeq(start:Int, end:Int, sum:Int) {
+//    def ++ (value:Int) = ContiguousSeq(start, end+1, sum + value)
+//    def > (that:ContiguousSeq): Boolean = this.sum > that.sum
+//    def == (that:ContiguousSeq): Boolean = this.sum == that.sum
+//    def < (that:ContiguousSeq): Boolean = this.sum < that.sum
+//  }
+//
+//  def mvcs(seq:Seq[Int]):Sequences = {
+//    var max = ContiguousSeq(0, 0, seq(0))
+//    var current = ContiguousSeq(0, 0, seq(0))
+//    for (i <- 1 to seq.length-1) {
+//      val newcurr = current ++ i
+//      if (i > current.sum) 
+//        current = ContiguousSeq(curr.end
+//      if (current > max) 
+//        max = ContiguousSeq(current.start, current.end, current.sum)
+//    }
+//  }
+//
+//  def main(args:Array[String]) = {
+//    val trials = List(
+//      List(1, 2, 3), 
+//      List(1, -1, 1), 
+//      List(-1, 3, -1, -1, 3, -1), 
+//      Nil
+//    )
+//    for (t <- trials) {
+//      println("mvcs = " + mvcs(t))
+//    }
+//  }
+//}
 
 //  2. Making Change. You are given n types of coin denominations of values v(1) < v(2) < ... < v(n)
 //  (all integers). Assume v(1) = 1, so you can always make change for any amount of money C. Give an
-//  algorithm which makes change for an amount of money C with as few coins as possible. [on problem
-//  set 4]
-// 
+//  algorithm which makes change for an amount of money C with as few coins as possible.
+
+object MakingChange {
+
+  def bestv(v:List[Int], m:Int, changeFor:List[List[Int]]):List[Int] = {
+    var best = 1 :: changeFor(m-1)
+    for (d <- v.view(1, v.size)) {
+      if (m-d >= 0 && changeFor(m-d).size + 1 < changeFor(m-1).size + 1) 
+        best = d :: changeFor(m-d)
+    }
+    best
+  }
+
+  def makeChange(v:List[Int], money:Int): List[Int] = {
+    var changeFor:List[List[Int]] = List(List())
+    for (m <- 1 to money) {
+      changeFor = changeFor ++ List(bestv(v, m, changeFor))
+    }
+    changeFor.last
+  }
+
+  def main(args:Array[String]) {
+    val tests:List[(List[Int], Int)] = List(
+      (List(1, 5, 10, 25), 127),
+      (List(1, 5, 10, 25), 33),
+      (List(1, 3), 7)
+    )
+    tests map { 
+      case (denom:List[Int], money:Int) => {
+        println("coins = " + denom.mkString(", "))
+        println( "change for " + money + " == " + makeChange(denom, money) )
+      }
+      case n => println(n)
+    }
+  }
+}
+
+
 //  3. Longest Increasing Subsequence. Given a sequence of n real numbers A(1) ... A(n), determine a
 //  subsequence (not necessarily contiguous) of maximum length in which the values in the subsequence
 //  form a strictly increasing sequence. [on problem set 4]
