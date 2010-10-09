@@ -1,6 +1,6 @@
 // Most exercises taken from : http://people.csail.mit.edu/bdean/6.046/dp/
 
-  
+/*  
 object MaximumValueContiguousSubsequence {
   //  1. Maximum Value Contiguous Subsequence. Given a sequence of n real numbers A(1) ... A(n),
   //  determine a contiguous subsequence A(i) ... A(j) for which the sum of elements in the subsequence
@@ -38,6 +38,45 @@ object MaximumValueContiguousSubsequence {
         if (prev.max > bestTail) prev.max else bestTail
         maxToCurrent
       Sequences(m2, maxToCurrent, bestTail)
+    }
+  }
+
+  def main(args:Array[String]) = {
+    val trials = List(
+      List(1, 2, 3), 
+      List(1, -1, 1), 
+      List(-1, 3, -1, -1, 3, -1), 
+      Nil
+    )
+    for (t <- trials) {
+      println("mvcs = " + mvcs(t))
+    }
+  }
+
+}
+*/
+
+
+object MaximumValueContiguousSubsequence {
+  //  1. Maximum Value Contiguous Subsequence. Given a sequence of n real numbers A(1) ... A(n),
+  //  determine a contiguous subsequence A(i) ... A(j) for which the sum of elements in the subsequence
+  //  is maximized.
+  case class ContiguousSeq(start:Int, end:Int, sum:Int) {
+    def ++ (value:Int) = ContiguousSeq(start, end+1, sum + value)
+    def > (that:ContiguousSeq): Boolean = this.sum > that.sum
+    def == (that:ContiguousSeq): Boolean = this.sum == that.sum
+    def < (that:ContiguousSeq): Boolean = this.sum < that.sum
+  }
+
+  def mvcs(seq:Seq[Int]):Sequences = {
+    var max = ContiguousSeq(0, 0, seq(1))
+    var current  = ContiguousSeq(0, 0, seq(1))
+    for (i <- seq.drop(1)) {
+      val newcurr = current ++ i
+      if (i > current.sum) 
+        current = ContiguousSeq(curr.end
+      if (current > max) 
+        max = ContiguousSeq(current.start, current.end, current.sum)
     }
   }
 

@@ -35,8 +35,6 @@ object StringOps  {
     })
     Map[String, List[String]](argmap.toList.reverse: _*)
   }
-
-
 }
 
 class StringOps(s:String) {
