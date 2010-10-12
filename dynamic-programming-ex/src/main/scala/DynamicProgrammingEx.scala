@@ -1,84 +1,214 @@
-// Most exercises taken from : http://people.csail.mit.edu/bdean/6.046/dp/
 
-  
-object MaximumValueContiguousSubsequence {
+// taken from : http://people.csail.mit.edu/bdean/6.046/dp/
+
+//object MaximumValueContiguousSubsequence {
   //  1. Maximum Value Contiguous Subsequence. Given a sequence of n real numbers A(1) ... A(n),
   //  determine a contiguous subsequence A(i) ... A(j) for which the sum of elements in the subsequence
   //  is maximized.
-  case class ContiguousSeq(start:Int, end:Int, sum:Int) {
-    def + (that:ContiguousSeq): ContiguousSeq = ContiguousSeq(this.start, that.end, this.sum + that.sum)
-    def > (that:ContiguousSeq): Boolean = this.sum > that.sum
-    def == (that:ContiguousSeq): Boolean = this.sum == that.sum
-    def < (that:ContiguousSeq): Boolean = this.sum < that.sum
+//  case class ContiguousSeq(start:Int, end:Int, sum:Int) {
+//    def ++ (value:Int) = ContiguousSeq(start, end+1, sum + value)
+//    def > (that:ContiguousSeq): Boolean = this.sum > that.sum
+//    def == (that:ContiguousSeq): Boolean = this.sum == that.sum
+//    def < (that:ContiguousSeq): Boolean = this.sum < that.sum
+//  }
+//
+//  def mvcs(seq:Seq[Int]):Sequences = {
+//    var max = ContiguousSeq(0, 0, seq(0))
+//    var current = ContiguousSeq(0, 0, seq(0))
+//    for (i <- 1 to seq.length-1) {
+//      val newcurr = current ++ i
+//      if (i > current.sum) 
+//        current = ContiguousSeq(curr.end
+//      if (current > max) 
+//        max = ContiguousSeq(current.start, current.end, current.sum)
+//    }
+//  }
+//
+//  def main(args:Array[String]) = {
+//    val trials = List(
+//      List(1, 2, 3), 
+//      List(1, -1, 1), 
+//      List(-1, 3, -1, -1, 3, -1), 
+//      Nil
+//    )
+//    for (t <- trials) {
+//      println("mvcs = " + mvcs(t))
+//    }
+//  }
+//}
+
+
+object MakingChange {
+  //  2. Making Change. You are given n types of coin denominations of values v(1) < v(2) < ... < v(n)
+  //  (all integers). Assume v(1) = 1, so you can always make change for any amount of money C. Give an
+  //  algorithm which makes change for an amount of money C with as few coins as possible.
+
+  def bestv_for(v:List[Int], m:Int, changeFor:List[List[Int]]):List[Int] = {
+    var best = 1 :: changeFor(m-1)
+    for (d <- v.view(1, v.size)) {
+      if (m-d >= 0 && changeFor(m-d).size + 1 < best.size) 
+        best = d :: changeFor(m-d)
+    }
+    best
   }
 
-  case class Sequences(max:ContiguousSeq, maxToCurrent:ContiguousSeq, tail:ContiguousSeq)
-
-  def mvcs(seq:Seq[Int]):Sequences = seq.length match {
-    case 0 => null
-    case 1 => {
-      val c = ContiguousSeq(0,1,seq.head)
-      Sequences(c, c, c)
-    }
-    case n => {
-      val prev = mvcs(seq.view(0, seq.length-1))
-      val curr = ContiguousSeq(n-1, n, seq.last)
-
-      val bestTail = 
-        if (prev.tail.end == n-1 && prev.tail + curr > prev.tail)
-          prev.tail + curr
-        else 
-          curr
-
-      val maxToCurrent = prev.maxToCurrent + curr
-
-      val m1 = if (prev.max > bestTail) prev.max else bestTail
-      val max = if (m1 > maxToCurrent) m1 else 
-
-        if (prev.max > bestTail) prev.max else bestTail
-        maxToCurrent
-      Sequences(m2, maxToCurrent, bestTail)
-    }
+  def bestv_fold(v:List[Int], m:Int, changeFor:List[List[Int]]):List[Int] = {
+    v.foldLeft (1 :: changeFor(m-1)) ({
+      (best, d) => {
+        if (m-d >= 0 && changeFor(m-d).size + 1 < best.size) 
+          d :: changeFor(m-d)
+        else
+          best
+      }})
   }
 
-  def main(args:Array[String]) = {
-    val trials = List(
-      List(1, 2, 3), 
-      List(1, -1, 1), 
-      List(-1, 3, -1, -1, 3, -1), 
-      Nil
+  def makeChange(v:List[Int], money:Int): List[Int] = {
+    var changeFor:List[List[Int]] = List(List())
+    for (m <- 1 to money) {
+      changeFor = changeFor ++ List(bestv_fold(v, m, changeFor))
+    }
+    changeFor.last
+  }
+
+  def main(args:Array[String]) {
+    val tests:List[(List[Int], Int)] = List(
+      (List(1, 5, 10, 25), 127),
+      (List(1, 5, 10, 25), 33),
+      (List(1, 3), 7)
     )
-    for (t <- trials) {
-      println("mvcs = " + mvcs(t))
+    tests map { 
+      case (denom:List[Int], money:Int) => {
+        println("coins = " + denom.mkString(", "))
+        println( "change for " + money + " == " + makeChange(denom, money) )
+      }
+      case n => println(n)
+    }
+  }
+}
+
+object LongestIncreasingSubsequence {
+  //  3. Longest Increasing Subsequence. Given a sequence of n real numbers A(1) ... A(n), determine a
+  //  subsequence (not necessarily contiguous) of maximum length in which the values in the subsequence
+  //  form a strictly increasing sequence.
+
+  // running time O(n^2), should be able to do this 
+  // in n log n
+  def longest(seq:List[Int]): List[Int] = {
+    var lis = List(List(0))
+
+    for (i <- 1 to seq.size-1) {
+      var best = List(i)
+      for (j <- 0 to lis.size-1) {
+        if (seq(i) > lis(j).last) {
+          if (lis(j).size + 1 > best.size)
+            best = lis(j) ++ List(i)
+        }
+      }
+      lis = lis ++ List(best)
+    }
+    lis.last
+  }
+
+  def main(args:Array[String]) {
+    val tests:List[List[Int]] = List(
+      List(1, 5, -10, 25),
+      List(1, -5, 10, -25),
+      List(-1, -3)
+    )
+    tests map { 
+      (seq) => {
+        println("seq = " + seq.mkString(", "))
+        println("lcs = " + longest(seq).mkString(", "))
+      }
     }
   }
 
 }
 
 
-//  2. Making Change. You are given n types of coin denominations of values v(1) < v(2) < ... < v(n)
-//  (all integers). Assume v(1) = 1, so you can always make change for any amount of money C. Give an
-//  algorithm which makes change for an amount of money C with as few coins as possible. [on problem
-//  set 4]
-// 
-//  3. Longest Increasing Subsequence. Given a sequence of n real numbers A(1) ... A(n), determine a
-//  subsequence (not necessarily contiguous) of maximum length in which the values in the subsequence
-//  form a strictly increasing sequence. [on problem set 4]
-// 
-//  4. Box Stacking. You are given a set of n types of rectangular 3-D boxes, where the i^th box has
-//  height h(i), width w(i) and depth d(i) (all real numbers). You want to create a stack of boxes
-//  which is as tall as possible, but you can only stack a box on top of another box if the dimensions
-//  of the 2-D base of the lower box are each strictly larger than those of the 2-D base of the higher
-//  box. Of course, you can rotate a box so that any side functions as its base. It is also allowable
-//  to use multiple instances of the same type of box.
-// 
+
+object BoxStacking {
+  //  4. Box Stacking. You are given a set of n types of rectangular 3-D boxes, where the i^th box has
+  //  height h(i), width w(i) and depth d(i) (all real numbers). You want to create a stack of boxes
+  //  which is as tall as possible, but you can only stack a box on top of another box if the dimensions
+  //  of the 2-D base of the lower box are each strictly larger than those of the 2-D base of the higher
+  //  box. Of course, you can rotate a box so that any side functions as its base. It is also allowable
+  //  to use multiple instances of the same type of box.
+  
+  case class Box(h:Int, w:Int, d:Int)
+
+  def stack(boxes:List[Box]): List[Box] = {
+    // init tower to inf sized table top + zero-dim box
+    var tower:List[Box] = List(boxes(0), Box(0, 0, 0))
+    // Box(Int.MaxValue, Int.MaxValue, Int.MaxValue), 
+    for {box  <- boxes;
+         brot <- rotations(box)} {
+           tower = addBox(brot, tower)
+         }
+    tower.view(1, tower.size-1).toList
+  }
+
+  def rotations(box:Box):List[Box] = {
+    val d = List(box.h, box.w, box.d).sorted
+    List((0, 1, 2), 
+         (1, 0, 2), 
+         (2, 0, 1)) map { x => x match {
+           case (a,b,c) => Box(d(a),d(b),d(c)) 
+         }}
+  }
+
+  def addBox(box:Box, tower:List[Box]):List[Box] = {
+    def baseGT(a:Box, b:Box) = a.w > b.w && a.d > b.d
+    def baseLT(a:Box, b:Box) = a.w < b.w && a.d < b.d
+
+    var n = 0
+    while (baseLT(box, tower(n))) n += 1
+    val min = n
+    while (!baseLT(tower(n), box)) n += 1
+    val max = n
+
+    if (height(tower.view(min, max)) < box.h) {
+      println("""
+              |   %s
+              | --> %s
+              |   %s
+              """.stripMargin.format(
+                tower.view(max, tower.size).reverse.mkString("\n   "),
+                box,  
+                tower.view(0, min).reverse.mkString("\n   ")))
+
+      tower.view(0, min).toList ++ List(box) ++ tower.view(max, tower.size)
+    }
+    else tower
+  }
+
+  import scala.collection.Seq
+
+  def height(boxes:Seq[Box]):Int = boxes.foldLeft(0)({(h:Int,b:Box) => h + b.h})
+
+  def main(args: Array[String]) = {
+    val tests = 
+      List(
+        List(Box(1, 2, 3), 
+             Box(2, 3, 4), 
+             Box(3, 4, 5)))
+    for (t <- tests) {
+      println(stack(t))
+    }
+
+  }
+}
+
+
 //  5. Building Bridges. Consider a 2-D map with a horizontal river passing through its center. There
 //  are n cities on the southern bank with x-coordinates a(1) ... a(n) and n cities on the northern
 //  bank with x-coordinates b(1) ... b(n). You want to connect as many north-south pairs of cities as
 //  possible with bridges such that no two bridges cross. When connecting cities, you can only connect
-//  city i on the northern bank to city i on the southern bank. (Note: this problem was incorrectly
-//  stated on the paper copies of the handout given in recitation.)
-// 
+//  city i on the northern bank to city i on the southern bank.
+object BuildingBridges {
+  
+}
+
 //  6. Integer Knapsack Problem (Duplicate Items Forbidden). This is the same problem as the example
 //  above, except here it is forbidden to use more than one instance of each type of item.
 // 
@@ -111,4 +241,10 @@ object MaximumValueContiguousSubsequence {
 // 12. Bin Packing (Simplified Version). You have n1 items of size s1, n2 items of size s2, and n3
 // items of size s3. You'd like to pack all of these items into bins each of capacity C, such that the
 // total number of bins used is minimized.
+
+object Scratchpad {
+  def main(args: Array[String]) = {
+    println(5 +: List(1, 2, 3, 4))
+  }
+}
 
