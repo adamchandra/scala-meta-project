@@ -259,11 +259,11 @@ class MetaProject(info: ProjectInfo) extends DefaultProject(info) {
 
   lazy val mongridfsProject = project("mongridfs", "mongridfs", new MongridfsProject(_))
   class MongridfsProject(info: ProjectInfo) extends DefaultSubProject(info, distPath) {
-    val mongoj = Dependencies.mongoj               % "compile;runtime;test"
-    val mongos = Dependencies.mongos               % "compile;runtime;test"
-    val process = Dependencies.sbt_process         % "compile;runtime;test"
-    val akkaCore = Dependencies.akkaCore           % "compile;runtime;test"
-    val acsCommons   = Dependencies.acsCommons     % "compile;runtime;test"
+    val mongoj = Dependencies.mongoj               % "compile"
+    val mongos = Dependencies.mongos               % "compile"
+    val process = Dependencies.sbt_process         % "compile"
+    val akkaCore = Dependencies.akkaCore           % "compile"
+    val acsCommons   = Dependencies.acsCommons     % "compile"
 
     val junit = Dependencies.junit           
     val scalatest = Dependencies.scalatest   
