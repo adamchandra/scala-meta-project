@@ -159,10 +159,13 @@ class MetaProject(info: ProjectInfo) extends DefaultProject(info) {
     lazy val jersey_contrib            = "com.sun.jersey.contribs"     % "jersey-scala"  % JERSEY_VERSION
     lazy val jersey_json               = "com.sun.jersey"              % "jersey-json"   % JERSEY_VERSION
     lazy val jersey_server             = "com.sun.jersey"              % "jersey-server" % JERSEY_VERSION
+
+    lazy val jetty_mortbay             = "org.mortbay.jetty"           % "jetty" % "6.1.22" 
     lazy val jetty                     = "org.eclipse.jetty"           % "jetty-server"  % JETTY_VERSION
     lazy val jetty_servlet             = "org.eclipse.jetty"           % "jetty-servlet" % JETTY_VERSION
     lazy val jetty_util                = "org.eclipse.jetty"           % "jetty-util"    % JETTY_VERSION
     lazy val jetty_xml                 = "org.eclipse.jetty"           % "jetty-xml"     % JETTY_VERSION
+
     lazy val jgroups                   = "jgroups"                     % "jgroups" % "2.9.0.GA"
     lazy val jsr166x                   = "jsr166x"                     % "jsr166x" % "1.0"
     lazy val jsr250                    = "javax.annotation"            % "jsr250-api" % "1.0"
@@ -181,7 +184,6 @@ class MetaProject(info: ProjectInfo) extends DefaultProject(info) {
     lazy val redis                     = "com.redis"                   % "redisclient" % "2.8.0-2.0"
     lazy val sbinary                   = "sbinary"                     % "sbinary" % "2.8.0-0.3.1"
     lazy val sbt_process               = "org.scala-tools.sbt"         % "process_2.8.0" % "0.1"
-
 
     lazy val sjson                     = "sjson.json"                  % "sjson" % "0.8-2.8.0"
     lazy val json                      = "org.json"                    % "json" % "20090211"
@@ -205,7 +207,10 @@ class MetaProject(info: ProjectInfo) extends DefaultProject(info) {
     lazy val heritrixModules  = "org.archive" % "heritrix-modules" % "3.0.0"
     lazy val fastutil         = "fastutil"    % "fastutil"         % "5.0.9"
 
-
+    // Lift
+    lazy val lift_webkit               = "net.liftweb"              %"lift-webkit_2.8.0" %"2.1"
+    lazy val lift_mapper               = "net.liftweb"              %"lift-mapper_2.8.0" %"2.1"
+    lazy val lift_mongodb              = "net.liftweb"              %"lift-mongodb_2.8.0" %"2.1"
 
 
     // Test
@@ -237,6 +242,7 @@ class MetaProject(info: ProjectInfo) extends DefaultProject(info) {
   }
 
 
+
   // -------------------------------------------------------------------------------------------------------------------
   // Subprojects
   // -------------------------------------------------------------------------------------------------------------------
@@ -266,7 +272,7 @@ class MetaProject(info: ProjectInfo) extends DefaultProject(info) {
     val commonsIO = Dependencies.commons_io                % "compile"
     val fastutil = Dependencies.fastutil                   % "compile"
     val hc = Dependencies.heritrixCommons                  % "compile"
-    val he = Dependencies.heritrixEngine                   % "compile" 
+    val he = Dependencies.heritrixEngine                   % "compile"
     val hm = Dependencies.heritrixModules                  % "compile"
     val json = Dependencies.json                           % "compile"
     val mongoj = Dependencies.mongoj                       % "compile"
@@ -291,8 +297,8 @@ class MetaProject(info: ProjectInfo) extends DefaultProject(info) {
 
   lazy val dynamicProgrammingEx = project("dynamic-programming-ex", "dynamic-programming-ex", new DynamicProgrammingEx(_))
   class DynamicProgrammingEx(info: ProjectInfo) extends DefaultSubProject(info, distPath) {
-    val junit = Dependencies.junit 
-    val scalatest = Dependencies.scalatest 
+    val junit = Dependencies.junit
+    val scalatest = Dependencies.scalatest
   }
 
   lazy val mongridfsProject = project("mongridfs", "mongridfs", new MongridfsProject(_))
@@ -303,13 +309,26 @@ class MetaProject(info: ProjectInfo) extends DefaultProject(info) {
     val akkaCore = Dependencies.akkaCore           % "compile"
     val acsCommons   = Dependencies.acsCommons     % "compile"
 
-    val junit = Dependencies.junit           
-    val scalatest = Dependencies.scalatest   
+    val junit = Dependencies.junit
+    val scalatest = Dependencies.scalatest
   }
 
   lazy val acsCommonsProject = project("acs-commons", "acs-commons", new AcsCommonsProject(_))
   class AcsCommonsProject(info: ProjectInfo) extends DefaultSubProject(info, distPath) {
-    val scalatest = Dependencies.scalatest 
+    val scalatest = Dependencies.scalatest
+    val junit = Dependencies.junit
+  }
+
+  lazy val liftoff = project("liftoff", "liftoff", new Liftoff(_))
+  class Liftoff(info: ProjectInfo) extends DefaultWebProject(info) {
+    val lift_webkit = Dependencies.lift_webkit
+    val lift_mapper = Dependencies.lift_mapper
+    val jetty_mortbay         = Dependencies.jetty_mortbay % "compile;runtime;test"
+    // val jetty_servlet      = Dependencies.jetty_servlet % "compile;runtime;test"
+    // val jetty_util         = Dependencies.jetty_util    % "compile;runtime;test"
+    // val jetty_xml          = Dependencies.jetty_xml     % "compile;runtime;test"
+
+    val scalatest = Dependencies.scalatest
     val junit = Dependencies.junit
   }
 
