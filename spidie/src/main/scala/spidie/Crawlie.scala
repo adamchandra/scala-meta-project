@@ -1,0 +1,7 @@
+
+
+object Crawlie {
+  // setup mongo
+
+
+}

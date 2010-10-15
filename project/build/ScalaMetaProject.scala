@@ -139,6 +139,10 @@ class MetaProject(info: ProjectInfo) extends DefaultProject(info) {
     lazy val commons_coll              = "commons-collections"         % "commons-collections" % "3.2.1"
     lazy val commons_io                = "commons-io"                  % "commons-io" % "1.4"
     lazy val commons_pool              = "commons-pool"                % "commons-pool" % "1.5.4"
+
+    lazy val apache_httpcore           = "org.apache.httpcomponents"   % "httpcore" % "4.0.1"
+    lazy val apache_httpclient         = "org.apache.httpcomponents"   % "httpclient" % "4.0.1"
+
     lazy val configgy                  = "net.lag"                     % "configgy" % "2.8.0-1.5.5"
     lazy val dispatch_http             = "net.databinder"              % "dispatch-http_2.8.0" % DISPATCH_VERSION
     lazy val dispatch_json             = "net.databinder"              % "dispatch-json_2.8.0" % DISPATCH_VERSION
@@ -177,16 +181,32 @@ class MetaProject(info: ProjectInfo) extends DefaultProject(info) {
     lazy val redis                     = "com.redis"                   % "redisclient" % "2.8.0-2.0"
     lazy val sbinary                   = "sbinary"                     % "sbinary" % "2.8.0-0.3.1"
     lazy val sbt_process               = "org.scala-tools.sbt"         % "process_2.8.0" % "0.1"
+
+
     lazy val sjson                     = "sjson.json"                  % "sjson" % "0.8-2.8.0"
+    lazy val json                      = "org.json"                    % "json" % "20090211"
+
     lazy val slf4j                     = "org.slf4j"                   % "slf4j-api"     % SLF4J_VERSION
     lazy val spring_beans              = "org.springframework"         % "spring-beans"   % SPRING_VERSION
     lazy val spring_context            = "org.springframework"         % "spring-context" % SPRING_VERSION
+    lazy val spring_core               = "org.springframework"         % "spring-core" % SPRING_VERSION
+
+
     lazy val stax_api                  = "javax.xml.stream"            % "stax-api" % "1.0-2"
     lazy val tagsoup                   = "org.ccil.cowan"              % "tagsoup" % "1.2"
     lazy val thrift                    = "com.facebook"                % "thrift" % "r917130"
     lazy val werkz                     = "org.codehaus.aspectwerkz"    % "aspectwerkz-nodeps-jdk5" % ASPECTWERKZ_VERSION
     lazy val werkz_core                = "org.codehaus.aspectwerkz"    % "aspectwerkz-jdk5"        % ASPECTWERKZ_VERSION
     lazy val zookeeper                 = "org.apache.hadoop.zookeeper" % "zookeeper" % "3.2.2"
+
+    // Heritrix web crawler
+    lazy val heritrixCommons  = "org.archive" % "heritrix-commons" % "3.0.0"
+    lazy val heritrixEngine   = "org.archive" % "heritrix-engine"  % "3.0.0"
+    lazy val heritrixModules  = "org.archive" % "heritrix-modules" % "3.0.0"
+    lazy val fastutil         = "fastutil"    % "fastutil"         % "5.0.9"
+
+
+
 
     // Test
     lazy val cassandra_clhm   = "org.apache.cassandra"    % "clhm-production"     % CASSANDRA_VERSION % "test"
@@ -202,6 +222,7 @@ class MetaProject(info: ProjectInfo) extends DefaultProject(info) {
     // Local projects
     lazy val scalaGenesis    = "cc.acs" % "scala-genesis_2.8.0" % "0.1"
     lazy val acsCommons      = "cc.acs" % "acs-commons_2.8.0"   % "0.1"
+    lazy val mongridfs       = "cc.acs" % "mongridfs_2.8.0"     % "0.1"
   }
 
   // ------------------------------------------------------------
@@ -236,6 +257,23 @@ class MetaProject(info: ProjectInfo) extends DefaultProject(info) {
     val mongoj = Dependencies.mongoj % "compile;runtime;test"
     val mongos = Dependencies.mongos % "compile;runtime;test"
     val tagsoup = Dependencies.tagsoup % "compile;runtime;test"
+  }
+
+  lazy val heritrixAddons               = project("heritrix-addons", "heritrix-addons", new HeritrixAddons(_))
+  class HeritrixAddons(info: ProjectInfo) extends DefaultSubProject(info, distPath) {
+    val apache_httpclient = Dependencies.apache_httpclient % "compile"
+    val apache_httpcore = Dependencies.apache_httpcore     % "compile"
+    val commonsIO = Dependencies.commons_io                % "compile"
+    val fastutil = Dependencies.fastutil                   % "compile"
+    val hc = Dependencies.heritrixCommons                  % "compile"
+    val he = Dependencies.heritrixEngine                   % "compile" 
+    val hm = Dependencies.heritrixModules                  % "compile"
+    val json = Dependencies.json                           % "compile"
+    val mongoj = Dependencies.mongoj                       % "compile"
+    val mongos = Dependencies.mongos                       % "compile"
+    val mongridfs = Dependencies.mongridfs                 % "compile"
+    val spring_context = Dependencies.spring_context       % "compile"
+    val spring_core = Dependencies.spring_core             % "compile"
   }
 
   lazy val robotRulesParser     = project("robot-rules-parser", "robot-rules-parser", new RobotRulesParserProject(_))

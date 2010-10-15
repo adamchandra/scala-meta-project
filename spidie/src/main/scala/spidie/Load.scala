@@ -12,10 +12,6 @@ import java.io.File
 import java.net.{URLConnection, URL, HttpURLConnection}
 import java.util.Date
 import scala.actors.Actor
-import org.apache.pdfbox.pdmodel.PDDocument
-import org.apache.pdfbox.pdmodel.encryption.AccessPermission
-import org.apache.pdfbox.pdmodel.encryption.StandardDecryptionMaterial
-import org.apache.pdfbox.util.PDFTextStripper
 
 object LoadURL extends SpidieLogging {
   /** Returns the (redirected URL, content, MIME ContentType, origContent) */
@@ -49,25 +45,7 @@ object LoadURL extends SpidieLogging {
       case "text/plain" => {
         content = inputStreamToString(connection.getInputStream)
       }
-      case "application/pdf" => {
-        var pdoc: PDDocument = null
-        try {
-          //origContent = inputStreamToString(connection.getInputStream)
-          pdoc = PDDocument.load(connection.getInputStream) // PDDocument.load(origContent)
-          val writer = new StringWriter() 
-          val stripper = new PDFTextStripper("UTF-8")
-          stripper.writeText(pdoc, writer)
-          content = writer.toString
-          pdoc.close
-        } catch {
-          case e:Exception => {
-            error("Failed to load "+url)
-            content = ""
-          }
-        } finally {
-          if (pdoc ne null) pdoc.close
-        }
-      }
+      case "application/pdf" => // took out pdfbox for now
       case _ => {
         error("Unable to obtain text from MIME type "+contentType)
         content = ""

@@ -12,11 +12,6 @@ import java.io.File
 import java.net.{URLConnection, URL, HttpURLConnection}
 import java.util.Date
 import scala.actors.Actor
-import org.apache.pdfbox.pdmodel.PDDocument
-import org.apache.pdfbox.pdmodel.encryption.AccessPermission
-import org.apache.pdfbox.pdmodel.encryption.StandardDecryptionMaterial
-import org.apache.pdfbox.util.PDFTextStripper
-
 
 object ResponseCode {
   val todo = 0
@@ -41,7 +36,7 @@ object Address extends MongoObjectShape[Address] {
   lazy val code = Field.scalar("code", _.code)
   override lazy val * = List(host, url, date, code)
   override def factory(dbo: DBObject): Option[Address] =
-    for {val host(h) <- Some(dbo); val url(u) <- Some(dbo); val date(d) <- Some(dbo); val code(st) <- Some(dbo)} yield 
+    for {host(h) <- Some(dbo); url(u) <- Some(dbo); date(d) <- Some(dbo); code(st) <- Some(dbo)} yield 
       new Address(h, new URL(u), None, d, st)
 }
 

@@ -12,10 +12,6 @@ import java.io.File
 import java.net.{URLConnection, URL, HttpURLConnection}
 import java.util.Date
 import scala.actors.Actor
-import org.apache.pdfbox.pdmodel.PDDocument
-import org.apache.pdfbox.pdmodel.encryption.AccessPermission
-import org.apache.pdfbox.pdmodel.encryption.StandardDecryptionMaterial
-import org.apache.pdfbox.util.PDFTextStripper
 
 case class Host(name:String) extends MongoObject
 object Host extends MongoObjectShape[Host] {

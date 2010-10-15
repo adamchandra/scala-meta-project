@@ -12,10 +12,6 @@ import java.io.File
 import java.net.{URLConnection, URL, HttpURLConnection}
 import java.util.Date
 import scala.actors.Actor
-import org.apache.pdfbox.pdmodel.PDDocument
-import org.apache.pdfbox.pdmodel.encryption.AccessPermission
-import org.apache.pdfbox.pdmodel.encryption.StandardDecryptionMaterial
-import org.apache.pdfbox.util.PDFTextStripper
 
 class Spider(val host:String) extends Actor with SpidieLogging {
   info("Creating Spider for "+host)
@@ -24,7 +20,6 @@ class Spider(val host:String) extends Actor with SpidieLogging {
     while(true) receive {
       case url:URL => {
         if ((!Spidie.exiting) && Spidie.addPage(url)) {
-          //fine("Spider "+host+" thread="+currentThread.getId+" message queue = "+mailboxSize)
           Thread.sleep(delay)
         }
       }

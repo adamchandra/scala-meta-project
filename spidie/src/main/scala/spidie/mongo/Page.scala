@@ -12,10 +12,6 @@ import java.io.File
 import java.net.{URLConnection, URL, HttpURLConnection}
 import java.util.Date
 import scala.actors.Actor
-import org.apache.pdfbox.pdmodel.PDDocument
-import org.apache.pdfbox.pdmodel.encryption.AccessPermission
-import org.apache.pdfbox.pdmodel.encryption.StandardDecryptionMaterial
-import org.apache.pdfbox.util.PDFTextStripper
 
 class Page(val url:URL, val code:Int, val date:Date, val contentType:String, val content:String) extends MongoObject with SpidieLogging {
   def this(date:Date, x:(URL,Int,String,String)) = this(x._1, x._2, date, x._4, x._3)
@@ -32,22 +28,19 @@ class Page(val url:URL, val code:Int, val date:Date, val contentType:String, val
     if (contentType != "text/html") None 
     else try { Some(XML.loadString(content)) } catch { case e:Exception => { error("Failed to parse "+url); None } } 
   def links: Seq[URL] = dom match {
-    case Some(dom) => (dom \\ "a").flatMap(node => (node \ "@href").firstOption match {
-    //case Some(dom) => (dom \\ "a").flatMap(node => node.attribute("href") match 
+    case Some(dom) => (dom \\ "a").flatMap(node => (node \ "@href").headOption match {
       case Some(nodeseq) => {
         try { 
-          //finest("Page.links1: url="+url+" extension="+nodeseq.first.toString);
-          val u = Address.normalizedURL(url, nodeseq.first.toString); 
-          //finest("Page.links2: "+u); 
-          Some(u) 
+          Some(Address.normalizedURL(url, nodeseq.head.toString))
         } 
-        catch { case e:Exception => { warn("Skipping unnormalizable href "+nodeseq.first); Nil } }
+        catch { case e:Exception => { warn("Skipping unnormalizable href "+nodeseq.head); Nil } }
       }
       case _ => { info("No href in "+node); Nil }
     }).filter(!_.toString.startsWith("mailto"))
     case _ => Nil
   }
 }
+
 object Page extends MongoObjectShape[Page] {
   val wordLexer = new Regex("[a-zA-Z]+")
   def hostFromURL(url:String) = new URL(url).getHost

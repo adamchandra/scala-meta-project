@@ -12,10 +12,6 @@ import java.io.File
 import java.net.{URLConnection, URL, HttpURLConnection}
 import java.util.Date
 import scala.actors.Actor
-import org.apache.pdfbox.pdmodel.PDDocument
-import org.apache.pdfbox.pdmodel.encryption.AccessPermission
-import org.apache.pdfbox.pdmodel.encryption.StandardDecryptionMaterial
-import org.apache.pdfbox.util.PDFTextStripper
 
 object Spidie extends SpidieLogging {
 
@@ -49,11 +45,11 @@ object Spidie extends SpidieLogging {
       spider(address.url)
     }
   }
-  //def ensureSpider(host:String): Unit = spiderMap(host)
 
   def getPage(url:URL): Option[Page] = {
-    (Page where {Page.url is_== url.toString} take 1 in pages).firstOption
+    (Page where {Page.url is_== url.toString} take 1 in pages).headOption
   }
+
   // Return true if actually got a new page
   def addPage(url:URL): Boolean = {
     // Skip if it is already there
@@ -73,6 +69,7 @@ object Spidie extends SpidieLogging {
   def setAddressCode(url:URL, code:Int): Unit = {
     addresses(Address.url is url.toString) = Address.code set code
   }
+
   def addAddress(url:URL): Unit = {
     if ((Address where {Address.url is url.toString} take 1 in addresses).size > 0) return
     info("Adding addr "+url)
@@ -84,15 +81,10 @@ object Spidie extends SpidieLogging {
       val batchSize = args(0).toInt
       println("Enquing "+batchSize+" URLs.")
       spider(batchSize)
-      //while (spiderMap.values.exists(_.mailboxSize > 0)) 
-      //Thread.sleep(1000) // Wait for some spiders to finish
-      //spiderMap.values.foreach(s => finer("Spider "+s.host+" message queue="+s.mailboxSize))
     } else {
       val startURL = new URL("http://www.cs.umass.edu/~mccallum") 
       println("Starting with "+startURL)
       spider(startURL)
-      //Thread.sleep(10 * 60 * 1000)
-      //spiderMap.values.foreach(s => finer("Spider "+s.host+" message queue="+s.mailboxSize))
     }
     interpreter()
   }
@@ -133,8 +125,6 @@ object Spidie extends SpidieLogging {
     Thread.sleep(2000)
     System.exit(0)
   }
-
-
 }
 
 
