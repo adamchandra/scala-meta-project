@@ -323,21 +323,11 @@ class MetaProject(info: ProjectInfo) extends DefaultProject(info) {
   class Liftoff(info: ProjectInfo) extends DefaultWebProject(info) {
     val lift_webkit = Dependencies.lift_webkit
     val lift_mapper = Dependencies.lift_mapper
-    val jetty_mortbay         = Dependencies.jetty_mortbay % "compile;runtime;test"
-    // val jetty_servlet      = Dependencies.jetty_servlet % "compile;runtime;test"
-    // val jetty_util         = Dependencies.jetty_util    % "compile;runtime;test"
-    // val jetty_xml          = Dependencies.jetty_xml     % "compile;runtime;test"
+    val jetty_mortbay = Dependencies.jetty_mortbay % "compile;runtime;test"
 
     val scalatest = Dependencies.scalatest
     val junit = Dependencies.junit
   }
-
-  //class PlaygroundProject(info: ProjectInfo) extends DefaultSubProject(info, distPath) {
-  //  val junit = Dependencies.junit % "compile;test"
-  //  val scalatest = Dependencies.scalatest % "compile;test"
-  //  val log4j = Dependencies.log4j
-  //}
-
 }
 
 trait RunRegex {
