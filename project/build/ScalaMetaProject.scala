@@ -174,8 +174,8 @@ class MetaProject(info: ProjectInfo) extends DefaultProject(info) {
     lazy val log4j                     = "log4j"                       % "log4j"               % "1.2.16"
     lazy val logback                   = "ch.qos.logback"              % "logback-classic" % LOGBACK_VERSION
     lazy val logback_core              = "ch.qos.logback"              % "logback-core" % LOGBACK_VERSION
-    lazy val mongoj                    = "org.mongodb"                 % "mongo-java-driver" % "2.1"
-    lazy val mongos                    = "Osinka.com"                  % "mongo-scala-driver_2.8.0" % "0.8.5"
+    lazy val mongoj                    = "org.mongodb"                 % "mongo-java-driver" % "2.2"
+    lazy val mongos                    = "com.osinka"                  % "mongo-scala-driver_2.8.0" % "0.8.6" /* http://scala-tools.org/repo-releases/com/osinka/mongo-scala-driver_2.8.0/0.8.6/ */
     lazy val multiverse                = "org.multiverse"              % "multiverse-alpha" % MULTIVERSE_VERSION
     lazy val netty                     = "org.jboss.netty"             % "netty" % "3.2.2.Final"
     lazy val osgi_core                 = "org.osgi"                    % "org.osgi.core" % "4.2.0"
@@ -278,6 +278,7 @@ class MetaProject(info: ProjectInfo) extends DefaultProject(info) {
     val mongoj = Dependencies.mongoj                       % "compile"
     val mongos = Dependencies.mongos                       % "compile"
     val mongridfs = Dependencies.mongridfs                 % "compile"
+    val tagsoup = Dependencies.tagsoup                     % "compile"
     val spring_context = Dependencies.spring_context       % "compile"
     val spring_core = Dependencies.spring_core             % "compile"
   }
