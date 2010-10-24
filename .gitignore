@@ -92,3 +92,4 @@ hs_err_*
 *.DS_Store
 
 
+lift_proto.db.h2.db

@@ -16,16 +16,36 @@ class PdfWriter extends Processor {
   override def shouldProcess(curi: CrawlURI): Boolean = true
 
   def mimeIsPsPdf(curi: CrawlURI):Boolean = curi.getContentType=="application/pdf" || curi.getContentType=="application/ps"
-  def looksLikePsPdf(curi: CrawlURI):Boolean = curi.getURI.endsWith(".ps") || curi.getURI.endsWith(".pdf")
+
+  val validSuffixes = List(
+    ".ps",
+    ".pdf",
+    ".ps.gz",
+    ".pdf.gz",
+    ".ps.Z",
+    ".pdf.Z")
+    
+  def looksLikePsPdf(curi: CrawlURI):Boolean = {
+    for (s <- validSuffixes) {
+      if (curi.getURI.endsWith(s))
+        return true
+    }
+    false
+  }
 
   def innerProcess(curi: CrawlURI): Unit = {
     val mimeType = curi.getContentType() 
     // "application/x-gzip"
-    if (mimeIsPsPdf(curi) || looksLikePsPdf(curi)) {
-      writePdf(curi)
+    if (curi.getFetchStatus() == 200) {
+      if (mimeIsPsPdf(curi) || looksLikePsPdf(curi)) {
+        writePdf(curi)
+      }
     }
-    else {
-      val path = curi.getData().get(A_MIRROR_PATH).asInstanceOf[String]
+    else
+      log.info("fetch status was " + curi.getFetchStatus() + "for " + curi)
+
+    val path = curi.getData().get(A_MIRROR_PATH).asInstanceOf[String]
+    if (path != null) {
       log.info("deleting file @path=" + path)
       file("mirror/" + path).delete
     }
@@ -72,9 +92,6 @@ class PdfWriter extends Processor {
       }
     } catch {
       case e: Exception => log.info(e.getClass.toString + ":" + e.getMessage)
-    }
-    finally{ 
-      ffile.delete
     }
   }
 }
