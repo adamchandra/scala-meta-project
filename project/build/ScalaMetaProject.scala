@@ -289,10 +289,10 @@ class MetaProject(info: ProjectInfo) extends DefaultProject(info) {
 
   lazy val tonysOptionExercises = project("tonys-option-exercises", "tonys-option-exercises", new TonysOptionExercisesProject(_))
   class TonysOptionExercisesProject(info: ProjectInfo) extends DefaultSubProject(info, distPath) {
-    val junit = Dependencies.junit
-    val scalatest = Dependencies.scalatest
-    val scalacheck = Dependencies.scalacheck
-    val log4j = Dependencies.log4j
+    val junit = Dependencies.junit                
+    val scalatest = Dependencies.scalatest        
+    val scalacheck = Dependencies.scalacheck     
+    val log4j = Dependencies.log4j                % "compile;runtime;test"
   }
 
   lazy val dynamicProgrammingEx = project("dynamic-programming-ex", "dynamic-programming-ex", new DynamicProgrammingEx(_))

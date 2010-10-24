@@ -120,115 +120,111 @@ object LongestIncreasingSubsequence {
 
 }
 
-//object BoxStacking {
-//  //  4. Box Stacking. You are given a set of n types of rectangular 3-D boxes, where the i^th box has
-//  //  height h(i), width w(i) and depth d(i) (all real numbers). You want to create a stack of boxes
-//  //  which is as tall as possible, but you can only stack a box on top of another box if the dimensions
-//  //  of the 2-D base of the lower box are each strictly larger than those of the 2-D base of the higher
-//  //  box. Of course, you can rotate a box so that any side functions as its base. It is also allowable
-//  //  to use multiple instances of the same type of box.
-//  
-//  case class Box(h:Int, w:Int, d:Int)
-//
-//  def stack(boxes:List[Box]): List[Box] = {
-//    // init tower to inf sized table top + zero-dim box
-//    var tower:List[Box] = List(boxes(0), Box(0, 0, 0))
-//    // Box(Int.MaxValue, Int.MaxValue, Int.MaxValue), 
-//    for {box  <- boxes;
-//         brot <- rotations(box)} {
-//           tower = addBox(brot, tower)
-//         }
-//    tower.view(1, tower.size-1).toList
-//  }
-//
-//  def rotations(box:Box):List[Box] = {
-//    val d = List(box.h, box.w, box.d).sorted
-//    List((0, 1, 2), 
-//         (1, 0, 2), 
-//         (2, 0, 1)) map { x => x match {
-//           case (a,b,c) => Box(d(a),d(b),d(c)) 
-//         }}
-//  }
-//
-//  def addBox(box:Box, tower:List[Box]):List[Box] = {
-//    def baseGT(a:Box, b:Box) = a.w > b.w && a.d > b.d
-//    def baseLT(a:Box, b:Box) = a.w < b.w && a.d < b.d
-//
-//    var n = 0
-//    while (baseLT(box, tower(n))) n += 1
-//    val min = n
-//    while (!baseLT(tower(n), box)) n += 1
-//    val max = n
-//
-//    if (height(tower.view(min, max)) < box.h) {
-//      println("""
-//              |   %s
-//              | --> %s
-//              |   %s
-//              """.stripMargin.format(
-//                tower.view(max, tower.size).reverse.mkString("\n   "),
-//                box,  
-//                tower.view(0, min).reverse.mkString("\n   ")))
-//
-//      tower.view(0, min).toList ++ List(box) ++ tower.view(max, tower.size)
-//    }
-//    else tower
-//  }
-//
-//  import scala.collection.Seq
-//
-//  def height(boxes:Seq[Box]):Int = boxes.foldLeft(0)({(h:Int,b:Box) => h + b.h})
-//
-//  def main(args: Array[String]) = {
-//    val tests = 
-//      List(
-//        List(Box(1, 2, 3), 
-//             Box(2, 3, 4), 
-//             Box(3, 4, 5)))
-//    for (t <- tests) {
-//      println(stack(t))
-//    }
-//
-//  }
-//}
-//
-//
-////  5. Building Bridges. Consider a 2-D map with a horizontal river passing through its center. There
-////  are n cities on the southern bank with x-coordinates a(1) ... a(n) and n cities on the northern
-////  bank with x-coordinates b(1) ... b(n). You want to connect as many north-south pairs of cities as
-////  possible with bridges such that no two bridges cross. When connecting cities, you can only connect
-////  city i on the northern bank to city i on the southern bank.
-//object BuildingBridges {
-//  // same as longest increasing subsequence
-//  def bridges(south:Seq[Int]): Seq[Int] = {
-//    var liss = List()
-//    for (s <- 0 to south.size-1) {
-//      // maximize over liss for all i=liss(i) where i < s and south(i) < south(s)
-//      var liss_s = List()
-//      for {i <- 0 to s;
-//           if south(i) < south(s);
-//           if south(i).size + 1 > liss.last.size; } {
-//             liss_s = south(i) :+ s
-//           }
-//      liss :+ liss_s
-//  }
-//
-//  def main(args:Array[String]) {
-//    val tests:List[List[Int]] = List(
-//      List(1, 5, -10, 25),
-//      List(1, -5, 10, -25),
-//      List(-1, -3)
-//    )
-//    tests map { 
-//      (seq) => {
-//        println("seq = " + seq.mkString(", "))
-//        println("bridges = " + bridge(seq).mkString(", "))
-//      }
-//    }
-//  }
-//
-//}
-//
+object BoxStacking {
+  //  4. Box Stacking. You are given a set of n types of rectangular 3-D boxes, where the i^th box has
+  //  height h(i), width w(i) and depth d(i) (all real numbers). You want to create a stack of boxes
+  //  which is as tall as possible, but you can only stack a box on top of another box if the dimensions
+  //  of the 2-D base of the lower box are each strictly larger than those of the 2-D base of the higher
+  //  box. Of course, you can rotate a box so that any side functions as its base. It is also allowable
+  //  to use multiple instances of the same type of box.
+  
+  case class Box(h:Int, w:Int, d:Int)
+
+  def stack(boxes:List[Box]): List[Box] = {
+    // init tower to inf sized table top + zero-dim box
+    var tower:List[Box] = List(boxes(0), Box(0, 0, 0))
+    // Box(Int.MaxValue, Int.MaxValue, Int.MaxValue), 
+    for {box  <- boxes;
+         brot <- rotations(box)} {
+           tower = addBox(brot, tower)
+         }
+    tower.dropRight(1)
+  }
+
+  def rotations(box:Box):List[Box] = {
+    val d = List(box.h, box.w, box.d).sorted
+    List((0, 1, 2), 
+         (1, 0, 2), 
+         (2, 0, 1)) map { x => x match {
+           case (a,b,c) => Box(d(a),d(b),d(c)) 
+         }}
+  }
+
+  def addBox(box:Box, tower:List[Box]):List[Box] = {
+    def baseGT(a:Box, b:Box) = a.w > b.w && a.d > b.d
+    def baseLT(a:Box, b:Box) = a.w < b.w && a.d < b.d
+
+    var n = 0
+    while (baseLT(box, tower(n))) n += 1
+    val min = n
+    while (!baseLT(tower(n), box)) n += 1
+    val max = n
+
+    if (height(tower.view(min, max)) < box.h) {
+      val str = """
+              |   %s
+              | --> %s
+              |   %s
+              """.stripMargin.format(
+                tower.view(max, tower.size).reverse.mkString("\n   "),
+                box,  
+                tower.view(0, min).reverse.mkString("\n   "))
+      println(str)
+
+      tower.view(0, min).toList ++ List(box) ++ tower.view(max, tower.size)
+    }
+    else tower
+  }
+
+  import scala.collection.Seq
+
+  def height(boxes:Seq[Box]):Int = boxes.foldLeft(0)({(h:Int,b:Box) => h + b.h})
+
+  def main(args: Array[String]) = {
+    val tests = 
+      List(
+        List(Box(1, 2, 3), 
+             Box(2, 3, 4), 
+             Box(3, 4, 5)),
+        List(Box(3, 6, 1), 
+             Box(5, 11, 8), 
+             Box(6, 12, 12), 
+             Box(9, 18, 1), 
+             Box(5, 10, 12)))
+    for (t <- tests) {
+      println(stack(t))
+    }
+  }
+}
+
+
+//  5. Building Bridges. Consider a 2-D map with a horizontal river passing through its center. There
+//  are n cities on the southern bank with x-coordinates a(1) ... a(n) and n cities on the northern
+//  bank with x-coordinates b(1) ... b(n). You want to connect as many north-south pairs of cities as
+//  possible with bridges such that no two bridges cross. When connecting cities, you can only connect
+//  city i on the northern bank to city i on the southern bank.
+object BuildingBridges {
+  // same as longest increasing subsequence
+  def bridges(cities:Seq[Int]): Seq[Int] = {
+    List(0)
+  }
+
+  def main(args:Array[String]) {
+    val tests:List[List[Int]] = List(
+      List(1, 5, -10, 25),
+      List(1, -5, 10, -25),
+      List(-1, -3)
+    )
+    tests map { 
+      (seq) => {
+        println("seq = " + seq.mkString(", "))
+        println("bridges = " + bridges(seq).mkString(", "))
+      }
+    }
+  }
+}
+
+
 //  6. Integer Knapsack Problem (Duplicate Items Forbidden). This is the same problem as the example
 //  above, except here it is forbidden to use more than one instance of each type of item.
 // 
@@ -262,9 +258,4 @@ object LongestIncreasingSubsequence {
 // items of size s3. You'd like to pack all of these items into bins each of capacity C, such that the
 // total number of bins used is minimized.
 
-object Scratchpad {
-  def main(args: Array[String]) = {
-    println(5 +: List(1, 2, 3, 4))
-  }
-}
 
