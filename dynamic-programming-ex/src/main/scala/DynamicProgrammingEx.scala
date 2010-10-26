@@ -8,9 +8,9 @@ object MaximumValueContiguousSubsequence {
     // subsequence is triple(start, end, sum)
     var max = (0, 1, seq(0))
     var curr = (0, 1, seq(0))
-    for (i <- 1 to seq.length-1) {
+    for (i <- 1 to seq.length - 1) {
       val extcurr = (curr._1, i, curr._3 + seq(i))
-      val newseq = (i, i+1, seq(i))
+      val newseq = (i, i + 1, seq(i))
       if (sum(newseq) > sum(extcurr))
         curr = newseq
       else
@@ -50,12 +50,10 @@ object MakingChange {
 
   def bestv_fold(v: List[Int], m: Int, changeFor: List[List[Int]]): List[Int] = {
     v.foldLeft(1 :: changeFor(m - 1))({ (best, d) =>
-      {
-        if (m - d >= 0 && changeFor(m - d).size + 1 < best.size)
-          d :: changeFor(m - d)
-        else
-          best
-      }
+      if (m - d >= 0 && changeFor(m - d).size + 1 < best.size)
+        d :: changeFor(m - d)
+      else
+        best
     })
   }
 
@@ -102,7 +100,7 @@ object LongestIncreasingSubsequence {
       }
       lis = lis ++ List(best)
     }
-    lis.foldLeft(lis.head) {case (l1, l2) => if (l1.length > l2.length) l1 else l2 }
+    lis.foldLeft(lis.head) { case (l1, l2) => if (l1.length > l2.length) l1 else l2 }
   }
 
   def main(args: Array[String]) {
@@ -127,32 +125,36 @@ object BoxStacking {
   //  of the 2-D base of the lower box are each strictly larger than those of the 2-D base of the higher
   //  box. Of course, you can rotate a box so that any side functions as its base. It is also allowable
   //  to use multiple instances of the same type of box.
-  
-  case class Box(h:Int, w:Int, d:Int)
 
-  def stack(boxes:List[Box]): List[Box] = {
+  case class Box(h: Int, w: Int, d: Int)
+
+  def stack(boxes: List[Box]): List[Box] = {
     // init tower to inf sized table top + zero-dim box
-    var tower:List[Box] = List(boxes(0), Box(0, 0, 0))
+    var tower: List[Box] = List(boxes(0), Box(0, 0, 0))
     // Box(Int.MaxValue, Int.MaxValue, Int.MaxValue), 
-    for {box  <- boxes;
-         brot <- rotations(box)} {
-           tower = addBox(brot, tower)
-         }
+    for {
+      box <- boxes;
+      brot <- rotations(box)
+    } {
+      tower = addBox(brot, tower)
+    }
     tower.dropRight(1)
   }
 
-  def rotations(box:Box):List[Box] = {
+  def rotations(box: Box): List[Box] = {
     val d = List(box.h, box.w, box.d).sorted
-    List((0, 1, 2), 
-         (1, 0, 2), 
-         (2, 0, 1)) map { x => x match {
-           case (a,b,c) => Box(d(a),d(b),d(c)) 
-         }}
+    List((0, 1, 2),
+      (1, 0, 2),
+      (2, 0, 1)) map {
+      _ match {
+        case (a, b, c) => Box(d(a), d(b), d(c))
+      }
+    }
   }
 
-  def addBox(box:Box, tower:List[Box]):List[Box] = {
-    def baseGT(a:Box, b:Box) = a.w > b.w && a.d > b.d
-    def baseLT(a:Box, b:Box) = a.w < b.w && a.d < b.d
+  def addBox(box: Box, tower: List[Box]): List[Box] = {
+    def baseGT(a: Box, b: Box) = a.w > b.w && a.d > b.d
+    def baseLT(a: Box, b: Box) = a.w < b.w && a.d < b.d
 
     var n = 0
     while (baseLT(box, tower(n))) n += 1
@@ -166,37 +168,35 @@ object BoxStacking {
               | --> %s
               |   %s
               """.stripMargin.format(
-                tower.view(max, tower.size).reverse.mkString("\n   "),
-                box,  
-                tower.view(0, min).reverse.mkString("\n   "))
+        tower.view(max, tower.size).reverse.mkString("\n   "),
+        box,
+        tower.view(0, min).reverse.mkString("\n   "))
       println(str)
 
       tower.view(0, min).toList ++ List(box) ++ tower.view(max, tower.size)
-    }
-    else tower
+    } else tower
   }
 
   import scala.collection.Seq
 
-  def height(boxes:Seq[Box]):Int = boxes.foldLeft(0)({(h:Int,b:Box) => h + b.h})
+  def height(boxes: Seq[Box]): Int = boxes.foldLeft(0)({ (h: Int, b: Box) => h + b.h })
 
   def main(args: Array[String]) = {
-    val tests = 
+    val tests =
       List(
-        List(Box(1, 2, 3), 
-             Box(2, 3, 4), 
-             Box(3, 4, 5)),
-        List(Box(3, 6, 1), 
-             Box(5, 11, 8), 
-             Box(6, 12, 12), 
-             Box(9, 18, 1), 
-             Box(5, 10, 12)))
+        List(Box(1, 2, 3),
+          Box(2, 3, 4),
+          Box(3, 4, 5)),
+        List(Box(3, 6, 1),
+          Box(5, 11, 8),
+          Box(6, 12, 12),
+          Box(9, 18, 1),
+          Box(5, 10, 12)))
     for (t <- tests) {
       println(stack(t))
     }
   }
 }
-
 
 //  5. Building Bridges. Consider a 2-D map with a horizontal river passing through its center. There
 //  are n cities on the southern bank with x-coordinates a(1) ... a(n) and n cities on the northern
@@ -205,18 +205,17 @@ object BoxStacking {
 //  city i on the northern bank to city i on the southern bank.
 object BuildingBridges {
   // same as longest increasing subsequence
-  def bridges(cities:Seq[Int]): Seq[Int] = {
+  def bridges(cities: Seq[Int]): Seq[Int] = {
     List(0)
   }
 
-  def main(args:Array[String]) {
-    val tests:List[List[Int]] = List(
+  def main(args: Array[String]) {
+    val tests: List[List[Int]] = List(
       List(1, 5, -10, 25),
       List(1, -5, 10, -25),
-      List(-1, -3)
-    )
-    tests map { 
-      (seq) => {
+      List(-1, -3))
+    tests map { (seq) =>
+      {
         println("seq = " + seq.mkString(", "))
         println("bridges = " + bridges(seq).mkString(", "))
       }
@@ -224,6 +223,13 @@ object BuildingBridges {
   }
 }
 
+object IntegerKnapsackWithDuplicates {
+  // The Integer Knapsack Problem (Duplicate Items Permitted). You have n types of
+  // items, where the ith item type has an integer size si and a real value vi . You are trying to fill a knapsack of
+  // total capacity C with a selection of items of maximum value. You can add multiple items of the same type
+  // to the knapsack.
+  
+}
 
 //  6. Integer Knapsack Problem (Duplicate Items Forbidden). This is the same problem as the example
 //  above, except here it is forbidden to use more than one instance of each type of item.
@@ -257,5 +263,4 @@ object BuildingBridges {
 // 12. Bin Packing (Simplified Version). You have n1 items of size s1, n2 items of size s2, and n3
 // items of size s3. You'd like to pack all of these items into bins each of capacity C, such that the
 // total number of bins used is minimized.
-
 
