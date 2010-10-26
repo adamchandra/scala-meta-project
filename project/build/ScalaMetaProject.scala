@@ -318,6 +318,9 @@ class MetaProject(info: ProjectInfo) extends DefaultProject(info) {
   class AcsCommonsProject(info: ProjectInfo) extends DefaultSubProject(info, distPath) {
     val scalatest = Dependencies.scalatest
     val junit = Dependencies.junit
+    override def managedStyle = ManagedStyle.Maven
+    val publishTo = "IESL Internal Repo" at "http://iesl.cs.umass.edu:8081/nexus/content/repositories/releases/"
+    Credentials.add("", "iesl.cs.umass.edu:8081", "deployment", "bkxEMjoW")
   }
 
   lazy val liftoff = project("liftoff", "liftoff", new Liftoff(_))
