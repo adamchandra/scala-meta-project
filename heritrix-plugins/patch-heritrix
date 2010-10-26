@@ -1,0 +1,16 @@
+#!/bin/bash
+
+## SCALA_VERSION=scala_2.8.1.RC3
+SCALA_VERSION=2.8.1.RC3
+
+# Set HERITRIX_HOME.
+if [ -z "$HERITRIX_HOME" ]
+then
+    echo "Must set HERITRIX_HOME like:"
+    echo "export HERITRIX_HOME="`pwd -P`
+    exit
+fi
+
+cp -f target/scala_$SCALA_VERSION/heritrix-plugins_$SCALA_VERSION-0.1.jar $HERITRIX_HOME/lib/
+cp -f lib_managed/scala_$SCALA_VERSION/runtime/*.jar $HERITRIX_HOME/lib/
+cp -f src/main/scripts/* $HERITRIX_HOME/bin

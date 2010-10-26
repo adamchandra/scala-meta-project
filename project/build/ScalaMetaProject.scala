@@ -49,6 +49,7 @@ class MetaProject(info: ProjectInfo) extends DefaultProject(info) {
     lazy val SunJDMKRepo            = MavenRepository("Sun JDMK Repo", "http://wp5.e-taxonomy.eu/cdmlib/mavenrepo")
     lazy val CasbahRepoReleases     = MavenRepository("Casbah Release Repo", "http://repo.bumnetworks.com/releases")
     lazy val ZookeeperRepo          = MavenRepository("Zookeeper Repo", "http://lilycms.org/maven/maven2/deploy/")
+    lazy val IESLRepo               = MavenRepository("IESL Repo", "http://iesl.cs.umass.edu:8081/nexus/content/repositories/releases")
   }
 
   // -------------------------------------------------------------------------------------------------------------------
@@ -79,6 +80,8 @@ class MetaProject(info: ProjectInfo) extends DefaultProject(info) {
   lazy val zookeeperRelease        = ModuleConfiguration("org.apache.hadoop.zookeeper",ZookeeperRepo)
   lazy val casbahModuleConfig      = ModuleConfiguration("com.novus", CasbahRepo)
   lazy val timeModuleConfig        = ModuleConfiguration("org.scala-tools", "time", CasbahSnapshotRepo)
+
+  lazy val acsConfig               = ModuleConfiguration("cc.acs", IESLRepo)
   lazy val embeddedRepo            = EmbeddedRepo // This is the only exception, because the embedded repo is fast!
 
   // -------------------------------------------------------------------------------------------------------------------
@@ -137,8 +140,10 @@ class MetaProject(info: ProjectInfo) extends DefaultProject(info) {
     lazy val cassandra                 = "org.apache.cassandra"        % "cassandra" % CASSANDRA_VERSION
     lazy val commons_codec             = "commons-codec"               % "commons-codec" % "1.4"
     lazy val commons_coll              = "commons-collections"         % "commons-collections" % "3.2.1"
-    lazy val commons_io                = "commons-io"                  % "commons-io" % "1.4"
+    // lazy val commons_io                = "commons-io"                  % "commons-io" % "1.4"
+    lazy val commons_io                = "commons-io"                  % "commons-io" % "2.0"
     lazy val commons_pool              = "commons-pool"                % "commons-pool" % "1.5.4"
+    lazy val commons_exec              = "org.apache.commons"          % "commons-exec" % "1.1"
 
     lazy val apache_httpcore           = "org.apache.httpcomponents"   % "httpcore" % "4.0.1"
     lazy val apache_httpclient         = "org.apache.httpcomponents"   % "httpclient" % "4.0.1"
@@ -175,7 +180,7 @@ class MetaProject(info: ProjectInfo) extends DefaultProject(info) {
     lazy val logback                   = "ch.qos.logback"              % "logback-classic" % LOGBACK_VERSION
     lazy val logback_core              = "ch.qos.logback"              % "logback-core" % LOGBACK_VERSION
     lazy val mongoj                    = "org.mongodb"                 % "mongo-java-driver" % "2.2"
-    lazy val mongos                    = "com.osinka"                  % "mongo-scala-driver_2.8.0" % "0.8.6" /* http://scala-tools.org/repo-releases/com/osinka/mongo-scala-driver_2.8.0/0.8.6/ */
+    lazy val mongos                    = "com.osinka"                  % "mongo-scala-driver_2.8.0" % "0.8.7" 
     lazy val multiverse                = "org.multiverse"              % "multiverse-alpha" % MULTIVERSE_VERSION
     lazy val netty                     = "org.jboss.netty"             % "netty" % "3.2.2.Final"
     lazy val osgi_core                 = "org.osgi"                    % "org.osgi.core" % "4.2.0"
@@ -223,11 +228,13 @@ class MetaProject(info: ProjectInfo) extends DefaultProject(info) {
     lazy val scalatest        = "org.scalatest"           % "scalatest"           % SCALATEST_VERSION % "test"
     lazy val scalacheck       = "org.scala-tools.testing" % "scalacheck_2.8.0"    % SCALACHECK_VERSION % "test"
 
+    def module(group:String, artifact: String) = group % (artifact + "_2.8.1.RC3") % "0.1"
+    def acsmodule(artifact: String) = module("cc.acs", artifact)
 
-    // Local projects
-    lazy val scalaGenesis    = "cc.acs" % "scala-genesis_2.8.0" % "0.1"
-    lazy val acsCommons      = "cc.acs" % "acs-commons_2.8.0"   % "0.1"
-    lazy val mongridfs       = "cc.acs" % "mongridfs_2.8.0"     % "0.1"
+    lazy val heritrixPlugins = module("cc.refectorie.heritrix", "heritrix-plugins")
+    lazy val scalaGenesis    = acsmodule("scala-genesis")
+    lazy val acsCommons      = acsmodule("acs-commons")
+    lazy val mongridfs       = acsmodule("mongridfs") 
   }
 
   // ------------------------------------------------------------
@@ -239,6 +246,10 @@ class MetaProject(info: ProjectInfo) extends DefaultProject(info) {
     override def packageDocsJar = this.defaultJarPath("-docs.jar")
     override def packageSrcJar  = this.defaultJarPath("-sources.jar")
     override def packageToPublishActions = super.packageToPublishActions ++ Seq(this.packageDocs, this.packageSrc)
+    // publish options
+    override def managedStyle = ManagedStyle.Maven
+    lazy val ieslRepo = "IESL Internal Repo" at "http://iesl.cs.umass.edu:8081/nexus/content/repositories/releases/"
+    Credentials.add("", "iesl.cs.umass.edu:8081", "deployment", "bkxEMjoW")
   }
 
 
@@ -306,7 +317,6 @@ class MetaProject(info: ProjectInfo) extends DefaultProject(info) {
   class MongridfsProject(info: ProjectInfo) extends DefaultSubProject(info, distPath) {
     val mongoj = Dependencies.mongoj               % "compile"
     val mongos = Dependencies.mongos               % "compile"
-    val process = Dependencies.sbt_process         % "compile"
     val akkaCore = Dependencies.akkaCore           % "compile"
     val acsCommons   = Dependencies.acsCommons     % "compile"
 
@@ -318,9 +328,6 @@ class MetaProject(info: ProjectInfo) extends DefaultProject(info) {
   class AcsCommonsProject(info: ProjectInfo) extends DefaultSubProject(info, distPath) {
     val scalatest = Dependencies.scalatest
     val junit = Dependencies.junit
-    override def managedStyle = ManagedStyle.Maven
-    val publishTo = "IESL Internal Repo" at "http://iesl.cs.umass.edu:8081/nexus/content/repositories/releases/"
-    Credentials.add("", "iesl.cs.umass.edu:8081", "deployment", "bkxEMjoW")
   }
 
   lazy val liftoff = project("liftoff", "liftoff", new Liftoff(_))

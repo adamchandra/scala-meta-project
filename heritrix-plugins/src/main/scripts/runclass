@@ -1,0 +1,18 @@
+#!/bin/bash
+
+CLSS=
+while getopts "c:" name; do
+    case $name in
+        c)    CLSS=$OPTARG;;
+        [?])  usage $0;;
+    esac
+done 
+
+CP=""
+
+for JAR in lib/*.jar
+do
+    CP="$CP:$JAR"
+done
+
+exec java -cp $CP $CLSS
