@@ -225,10 +225,53 @@ object BuildingBridges {
 
 object IntegerKnapsackWithDuplicates {
   // The Integer Knapsack Problem (Duplicate Items Permitted). You have n types of
-  // items, where the ith item type has an integer size si and a real value vi . You are trying to fill a knapsack of
+  // items, where the ith item type has an integer size si and a real value vi. You are trying to fill a knapsack of
   // total capacity C with a selection of items of maximum value. You can add multiple items of the same type
   // to the knapsack.
+  case class Item(size:Int, value:Int)
+
+  def fillKnapsack(capacity:Int, items:List[Item]) = {
+    var filler = List[(Int, Item)]()
+    var remainingCapacity = capacity
+    // assumes a knapsack can be filled completely
+    while (remainingCapacity > 0) {
+      println("remaining capacity " + remainingCapacity)
+      var bestitem:Item = null
+      var maxvalue = -1
+      for (item <- items) {
+        println("checking " + item)
+        println("r/s = " + remainingCapacity / item.size)
+        val v = remainingCapacity / item.size * item.value
+        if (v > maxvalue) {
+          println("using " + item)
+          maxvalue = v
+          bestitem = item
+        }
+      }
+      filler = filler :+ (remainingCapacity/bestitem.size, bestitem)
+      remainingCapacity = capacity % bestitem.size
+    }
+
+    filler
+  }
   
+  def item(t:(Int, Int)) = Item(t._1, t._2)
+
+  def main(args: Array[String]) {
+    val tests: List[List[Item]] = List(
+      // s, v, ...
+      List((1, 1), (3, 4), (5, 2)) map {item(_)}
+    )
+    
+    tests map { (items) =>
+      {
+        println("items = " + items.mkString(", "))
+        println(fillKnapsack(28, items).mkString("[", ", ", "]"))
+      }
+    }
+  }
+  
+
 }
 
 //  6. Integer Knapsack Problem (Duplicate Items Forbidden). This is the same problem as the example

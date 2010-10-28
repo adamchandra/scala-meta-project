@@ -80,8 +80,11 @@ class MetaProject(info: ProjectInfo) extends DefaultProject(info) {
   lazy val zookeeperRelease        = ModuleConfiguration("org.apache.hadoop.zookeeper",ZookeeperRepo)
   lazy val casbahModuleConfig      = ModuleConfiguration("com.novus", CasbahRepo)
   lazy val timeModuleConfig        = ModuleConfiguration("org.scala-tools", "time", CasbahSnapshotRepo)
+  lazy val akkaModuleConfig        = ModuleConfiguration("se.scalablesolutions.akka", AkkaRepo)
+  lazy val jsonModuleConfig        = ModuleConfiguration("sjson.json", AkkaRepo)
 
-  lazy val acsConfig               = ModuleConfiguration("cc.acs", IESLRepo)
+  lazy val iesl1Config             = ModuleConfiguration("cc.acs", IESLRepo)
+  lazy val iesl2Config             = ModuleConfiguration("cc.refectorie", IESLRepo)
   lazy val embeddedRepo            = EmbeddedRepo // This is the only exception, because the embedded repo is fast!
 
   // -------------------------------------------------------------------------------------------------------------------
@@ -110,7 +113,8 @@ class MetaProject(info: ProjectInfo) extends DefaultProject(info) {
   // -------------------------------------------------------------------------------------------------------------------
 
   object Dependencies {
-    def akkaModule(module: String) = "se.scalablesolutions.akka" %% ("akka-" + module) % AKKA_VERSION
+    // def akkaModule(module: String) = "se.scalablesolutions.akka" %% ("akka-" + module) % AKKA_VERSION
+    def akkaModule(module: String) = "se.scalablesolutions.akka" % ("akka-" + module + "_2.8.0") % AKKA_VERSION
 
     lazy val akkaAMQP                  = akkaModule("amqp")
     lazy val akkaCamel                 = akkaModule("camel")
@@ -180,7 +184,7 @@ class MetaProject(info: ProjectInfo) extends DefaultProject(info) {
     lazy val logback                   = "ch.qos.logback"              % "logback-classic" % LOGBACK_VERSION
     lazy val logback_core              = "ch.qos.logback"              % "logback-core" % LOGBACK_VERSION
     lazy val mongoj                    = "org.mongodb"                 % "mongo-java-driver" % "2.2"
-    lazy val mongos                    = "com.osinka"                  % "mongo-scala-driver_2.8.0" % "0.8.7" 
+    lazy val mongos                    = "com.osinka"                  % "mongo-scala-driver_2.8.0" % "0.8.7-SNAPSHOT" // in the embedded repo
     lazy val multiverse                = "org.multiverse"              % "multiverse-alpha" % MULTIVERSE_VERSION
     lazy val netty                     = "org.jboss.netty"             % "netty" % "3.2.2.Final"
     lazy val osgi_core                 = "org.osgi"                    % "org.osgi.core" % "4.2.0"
@@ -228,7 +232,8 @@ class MetaProject(info: ProjectInfo) extends DefaultProject(info) {
     lazy val scalatest        = "org.scalatest"           % "scalatest"           % SCALATEST_VERSION % "test"
     lazy val scalacheck       = "org.scala-tools.testing" % "scalacheck_2.8.0"    % SCALACHECK_VERSION % "test"
 
-    def module(group:String, artifact: String) = group % (artifact + "_2.8.1.RC3") % "0.1"
+    // def module(group:String, artifact: String) = group % (artifact + "_2.8.1.RC3") % "0.1"
+    def module(group:String, artifact: String) = group %% artifact % "0.1"
     def acsmodule(artifact: String) = module("cc.acs", artifact)
 
     lazy val heritrixPlugins = module("cc.refectorie.heritrix", "heritrix-plugins")
@@ -246,10 +251,10 @@ class MetaProject(info: ProjectInfo) extends DefaultProject(info) {
     override def packageDocsJar = this.defaultJarPath("-docs.jar")
     override def packageSrcJar  = this.defaultJarPath("-sources.jar")
     override def packageToPublishActions = super.packageToPublishActions ++ Seq(this.packageDocs, this.packageSrc)
-    // publish options
-    override def managedStyle = ManagedStyle.Maven
-    lazy val ieslRepo = "IESL Internal Repo" at "http://iesl.cs.umass.edu:8081/nexus/content/repositories/releases/"
-    Credentials.add("", "iesl.cs.umass.edu:8081", "deployment", "bkxEMjoW")
+    // // publish options
+    // override def managedStyle = ManagedStyle.Maven
+    // lazy val ieslRepo = "IESL Internal Repo" at "http://iesl.cs.umass.edu:8081/nexus/content/repositories/releases/"
+    // Credentials.add("", "iesl.cs.umass.edu:8081", "deployment", "bkxEMjoW")
   }
 
 
@@ -263,7 +268,8 @@ class MetaProject(info: ProjectInfo) extends DefaultProject(info) {
 
   class ScalaGenesisProject(info: ProjectInfo) extends DefaultSubProject(info, distPath) {
     val akkaCore = Dependencies.akkaCore % "compile;runtime;test"
-    val acsCommons   = Dependencies.acsCommons     % "compile;runtime;test"
+    val acsCommons  = Dependencies.acsCommons     % "compile;runtime;test"
+    val mongridfs = Dependencies.mongridfs                 % "compile"
 
     val junit = Dependencies.junit
     val scalatest = Dependencies.scalatest
@@ -289,6 +295,7 @@ class MetaProject(info: ProjectInfo) extends DefaultProject(info) {
     val mongoj = Dependencies.mongoj                       % "compile"
     val mongos = Dependencies.mongos                       % "compile"
     val mongridfs = Dependencies.mongridfs                 % "compile"
+    val acsCommons = Dependencies.acsCommons                % "compile"
     val tagsoup = Dependencies.tagsoup                     % "compile"
     val spring_context = Dependencies.spring_context       % "compile"
     val spring_core = Dependencies.spring_core             % "compile"
@@ -318,16 +325,25 @@ class MetaProject(info: ProjectInfo) extends DefaultProject(info) {
     val mongoj = Dependencies.mongoj               % "compile"
     val mongos = Dependencies.mongos               % "compile"
     val akkaCore = Dependencies.akkaCore           % "compile"
-    val acsCommons   = Dependencies.acsCommons     % "compile"
+    val acsCommons  = Dependencies.acsCommons      % "compile"
 
     val junit = Dependencies.junit
     val scalatest = Dependencies.scalatest
+
+    override def managedStyle = ManagedStyle.Maven
+    lazy val publishTo = "Releases" at "http://iesl.cs.umass.edu:8081/nexus/content/repositories/releases/"
+    Credentials.add("", "iesl.cs.umass.edu:8081", "deployment", "bkxEMjoW")
   }
 
   lazy val acsCommonsProject = project("acs-commons", "acs-commons", new AcsCommonsProject(_))
   class AcsCommonsProject(info: ProjectInfo) extends DefaultSubProject(info, distPath) {
     val scalatest = Dependencies.scalatest
     val junit = Dependencies.junit
+    // publish options
+    override def managedStyle = ManagedStyle.Maven
+    val publishTo = "IESL Internal Repo" at "http://iesl.cs.umass.edu:8081/nexus/content/repositories/snapshots"
+    // Credentials.add("ieslnexus", "iesl.cs.umass.edu:8081", "deployment", "bkxEMjoW")
+    Credentials.add("", "iesl.cs.umass.edu:8081", "deployment", "bkxEMjoW")
   }
 
   lazy val liftoff = project("liftoff", "liftoff", new Liftoff(_))
