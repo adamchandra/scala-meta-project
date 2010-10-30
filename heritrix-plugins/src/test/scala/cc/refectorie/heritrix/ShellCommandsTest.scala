@@ -17,27 +17,24 @@ class ShellCommandsTest extends FunSuite with AssertionsForJUnit  {
   val psfile = file("heritrix-plugins/src/test/resources/92.ps")
   
   test("os file") {
-    assertEquals("application/postscript", ShellCommands.os_file(psfile.getPath()))
+    assertTrue(ShellCommands.os_file(psfile.getPath).contains("application/postscript"))
   }
-
 
   test("gzip/unzip") {
     val tmpfile = file("tstfile") 
     FileUtils.copyFile(psfile, tmpfile)
-    assertEquals("application/postscript", ShellCommands.os_file(psfile.getPath))
+    assertTrue(ShellCommands.os_file(psfile.getPath).contains("application/postscript"))
     ShellCommands.os_gzip(tmpfile.getPath())
-    assertEquals("application/postscript (application/x-gzip)", ShellCommands.os_file(tmpfile.getPath))
+    assertTrue(ShellCommands.os_file(tmpfile.getPath).contains("application/x-gzip"))
     tmpfile.delete
   }
   
-  // test("normalize file") {
-  //   val tmpfile = file("tstfile") 
-  //   FileUtils.copyFile(psfile, tmpfile)
-  //   println("tmpfile.exists() = " + tmpfile.exists())
-  //   ShellCommands.os_gzip(tmpfile.getPath)
-  //   println("tmpfile.exists() = " + tmpfile.exists())
-  //   val shas = ShellCommands.normalizePdf(tmpfile.getPath)
-  //   println("shas:  " + shas.mkString("[", ", ", "]"))
-  //   FileUtils.forceDelete(tmpfile)
-  // }
+  test("normalize file") {
+    val tmpfile = file("tstfile") 
+    FileUtils.copyFile(psfile, tmpfile)
+    ShellCommands.os_gzip(tmpfile.getPath)
+    val shas = ShellCommands.normalizePdf(tmpfile.getPath)
+    assertTrue("zipped/unzipped version", shas.length==2)
+    FileUtils.forceDelete(tmpfile)
+  }
 }

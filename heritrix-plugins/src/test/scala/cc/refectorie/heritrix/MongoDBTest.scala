@@ -8,6 +8,7 @@ import org.junit.Assert._
 import org.junit.Test
 import org.junit.Before
 import org.junit.BeforeClass
+import org.apache.commons.io.FileUtils
 
 class MongoDBTest extends FunSuite with AssertionsForJUnit with BeforeAndAfterAll {
   import cc.acs.commons.util.StringOps._
@@ -41,7 +42,15 @@ class MongoDBTest extends FunSuite with AssertionsForJUnit with BeforeAndAfterAl
     aliasCount(List(6), MongoDB.aliasColl)
   }
 
+  val psfile = file("heritrix-plugins/src/test/resources/92.ps")
+
   test("put pdfs") {
-    // MongoDB.put("filename")
+    MongoDB.dropDatabase
+    val tmpfile = file("tstfile") 
+    FileUtils.copyFile(psfile, tmpfile)
+    MongoDB.put(tmpfile.getPath)
+
+    MongoDB.put(tmpfile.getPath)
+    tmpfile.delete
   }
 }

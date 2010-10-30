@@ -10,23 +10,17 @@ import java.io.File
 import org.archive.modules.{ Processor, CrawlURI }
 import scala.collection.JavaConversions._
 import Utils._
+import cc.acs.commons.util.StringOps.wsv
 
 class PdfWriter extends Processor {
   val log = Logger.getLogger(classOf[PdfWriter].getName)
 
-  def mimeIsPsPdf(curi: CrawlURI): Boolean = curi.getContentType == "application/pdf" || curi.getContentType == "application/ps"
+  def mimeIsPsPdf(curi: CrawlURI): Boolean = curi.getContentType.contains("application/pdf") || curi.getContentType.contains("application/ps")
 
-  val validSuffixes = List(
-    ".ps",
-    ".pdf",
-    ".ps.gz",
-    ".pdf.gz",
-    ".ps.bz2",
-    ".pdf.bz2",
-    ".ps.z",
-    ".pdf.z")
+  val validSuffixes = wsv("ps pdf ps.gz pdf.gz ps.bz2 pdf.bz2 ps.z pdf.z")
+  def extensionIsPsPdf(curi: CrawlURI): Boolean = validSuffixes.exists {e => curi.getURI.endsWith("." + e )}
 
-  def looksLikePsPdf(curi: CrawlURI): Boolean = mimeIsPsPdf(curi) || validSuffixes.exists(curi.getURI.endsWith(_))
+  def looksLikePsPdf(curi: CrawlURI): Boolean = mimeIsPsPdf(curi) || extensionIsPsPdf(curi)
 
   override def shouldProcess(curi: CrawlURI): Boolean = looksLikePsPdf(curi)
 
@@ -34,10 +28,10 @@ class PdfWriter extends Processor {
     if (curi.getFetchStatus() == 200)
       writePdf(curi)
     else
-      log.info("fetch status was " + curi.getFetchStatus() + "for " + curi)
+      log.info("fetch status was " + curi.getFetchStatus() + " for " + curi)
 
     getMirrorFile(curi).foreach { f =>
-      log.info("deleting file @path=" + f.getPath)
+      log.info("deleting file " + f.getPath)
       f.delete
     }
   }

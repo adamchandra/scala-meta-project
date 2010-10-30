@@ -223,20 +223,142 @@ object BuildingBridges {
   }
 }
 
-object IntegerKnapsackWithDuplicates {
+import scala.collection.{ mutable => mut }
+import scala.collection.{ immutable => imm }
+
+/*
+ * knapsack variations:
+ *   0/1
+ *   contrained item count
+ *   unconstrained
+ *   bin packing variations (multiple knapsacks)
+ */
+trait Knapsack {
+  case class Item(size: Int, value: Int)
+  def item(t: (Int, Int)) = Item(t._1, t._2)
+}
+
+case class Matrixx(rows: Int, cols: Int) {
+  var m: mut.Map[Int, mut.Map[Int, Int]] = mut.Map()
+  var maxVal = 0 // keep track for toString pretty printing
+  // var a = Array.ofDim(rows, cols)
+  (0 to rows - 1) foreach { row =>
+    m(row) = mut.Map()
+    (0 to cols - 1) foreach { col =>
+      m(row)(col) = 0
+    }
+  }
+
+  def getOrElse(row: Int, col: Int, v: Int): Int = {
+    try { m(row)(col) }
+    catch { case e: Exception => v }
+  }
+
+  def apply(row: Int, col: Int) = m(row)(col)
+  def update(row: Int, col: Int, n: Int) = {
+    m(row)(col) = n
+    maxVal = math.max(maxVal, n)
+  }
+
+  override def toString = {
+    def width(i: Int) = ("" + i).length
+    val colwidth = width(maxVal)
+    var str = ""
+    for (x <- 0 to rows - 1) {
+      for (y <- 0 to cols - 1) 
+        str += (" " * (1 + colwidth - width(this(x,y)))) + this(x,y)
+      str += "\n"
+    }
+    str
+  }
+
+}
+
+case class Matrix(rows: Int, cols: Int) {
+  var m = Array.ofDim[Int](rows, cols)
+  var maxVal = 0 // keep track for toString pretty printing
+
+  def getOrElse(row: Int, col: Int, v: Int): Int = {
+    try { m(row)(col) }
+    catch { case e: Exception => v }
+  }
+
+  def apply(row: Int, col: Int) = m(row)(col)
+  def update(row: Int, col: Int, n: Int) = {
+    m(row)(col) = n
+    maxVal = math.max(maxVal, n)
+  }
+
+  override def toString = {
+    def width(i: Int) = ("" + i).length
+    val colwidth = width(maxVal)
+    var str = ""
+    for (x <- 0 to rows - 1) {
+      for (y <- 0 to cols - 1) 
+        str += (" " * (1 + colwidth - width(this(x,y)))) + this(x,y)
+      str += "\n"
+    }
+    str
+  }
+
+}
+
+object Knapsack01 extends Knapsack {
+  // row-major filling of dp matrix:
+  def pack(capacity: Int, items: List[Item]): List[Item] = {
+    var m: Matrix = Matrix(items.length + 1, capacity + 1)
+    (items zipWithIndex).foreach {
+      case (item, ix) =>
+        val i = ix + 1
+        (1 to capacity).foreach { c =>
+          val p1 = m(i - 1, c)
+          val p2 = m.getOrElse(i - 1, c - item.size, -item.size) + item.size
+          m(i, c) = math.max(p1, p2)
+        }
+    }
+    println(m)
+    backtrace(m, items)
+  }
+
+  def backtrace(m:Matrix, items:List[Item]):List[Item] = {
+    var l: List[Item] = List()
+    var row = m.rows - 1
+    var col = m.cols - 1
+    while (row > 0) {
+      if (m(row, col) != m(row - 1, col)) {
+        l = l :+ items(row - 1)
+        col - items(row - 1).size
+      }
+      row -= 1
+    }
+    l
+  }
+
+  def main(args: Array[String]): Unit = {
+    println("running knapsack 0/1")
+    val items = List((1, 10), (6, 60), (6, 60), (10, 100), (1, 10)) map (item _)
+    println("items = " + items.mkString("[", ", ", "]"))
+    println(pack(12, items))
+  }
+}
+
+object KnapsackConstrained {
+
+}
+
+object KnapsackUnconstrained extends Knapsack {
   // The Integer Knapsack Problem (Duplicate Items Permitted). You have n types of
   // items, where the ith item type has an integer size si and a real value vi. You are trying to fill a knapsack of
   // total capacity C with a selection of items of maximum value. You can add multiple items of the same type
   // to the knapsack.
-  case class Item(size:Int, value:Int)
 
-  def fillKnapsack(capacity:Int, items:List[Item]) = {
+  def fillApprox(capacity: Int, items: List[Item]) = {
     var filler = List[(Int, Item)]()
     var remainingCapacity = capacity
     // assumes a knapsack can be filled completely
     while (remainingCapacity > 0) {
       println("remaining capacity " + remainingCapacity)
-      var bestitem:Item = null
+      var bestitem: Item = null
       var maxvalue = -1
       for (item <- items) {
         println("checking " + item)
@@ -248,29 +370,25 @@ object IntegerKnapsackWithDuplicates {
           bestitem = item
         }
       }
-      filler = filler :+ (remainingCapacity/bestitem.size, bestitem)
+      filler = filler :+ (remainingCapacity / bestitem.size, bestitem)
       remainingCapacity = capacity % bestitem.size
     }
 
     filler
   }
-  
-  def item(t:(Int, Int)) = Item(t._1, t._2)
 
   def main(args: Array[String]) {
     val tests: List[List[Item]] = List(
       // s, v, ...
-      List((1, 1), (3, 4), (5, 2)) map {item(_)}
-    )
-    
+      List((1, 1), (3, 4), (5, 2)) map { item(_) })
+
     tests map { (items) =>
       {
         println("items = " + items.mkString(", "))
-        println(fillKnapsack(28, items).mkString("[", ", ", "]"))
+        // println(fillKnapsack(28, items).mkString("[", ", ", "]"))
       }
     }
   }
-  
 
 }
 

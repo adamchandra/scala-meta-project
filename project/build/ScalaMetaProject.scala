@@ -83,8 +83,8 @@ class MetaProject(info: ProjectInfo) extends DefaultProject(info) {
   lazy val akkaModuleConfig        = ModuleConfiguration("se.scalablesolutions.akka", AkkaRepo)
   lazy val jsonModuleConfig        = ModuleConfiguration("sjson.json", AkkaRepo)
 
-  lazy val iesl1Config             = ModuleConfiguration("cc.acs", IESLRepo)
-  lazy val iesl2Config             = ModuleConfiguration("cc.refectorie", IESLRepo)
+  // lazy val iesl1Config             = ModuleConfiguration("cc.acs", IESLRepo)
+  // lazy val iesl2Config             = ModuleConfiguration("cc.refectorie", IESLRepo)
   lazy val embeddedRepo            = EmbeddedRepo // This is the only exception, because the embedded repo is fast!
 
   // -------------------------------------------------------------------------------------------------------------------
@@ -253,7 +253,7 @@ class MetaProject(info: ProjectInfo) extends DefaultProject(info) {
     override def packageToPublishActions = super.packageToPublishActions ++ Seq(this.packageDocs, this.packageSrc)
     // // publish options
     // override def managedStyle = ManagedStyle.Maven
-    // lazy val ieslRepo = "IESL Internal Repo" at "http://iesl.cs.umass.edu:8081/nexus/content/repositories/releases/"
+    // lazy val publishTo = "IESL Internal Repo" at "http://iesl.cs.umass.edu:8081/nexus/content/repositories/releases/"
     // Credentials.add("", "iesl.cs.umass.edu:8081", "deployment", "bkxEMjoW")
   }
 
@@ -282,28 +282,25 @@ class MetaProject(info: ProjectInfo) extends DefaultProject(info) {
     val tagsoup = Dependencies.tagsoup % "compile;runtime;test"
   }
 
-  lazy val heritrixAddons               = project("heritrix-addons", "heritrix-addons", new HeritrixAddons(_))
-  class HeritrixAddons(info: ProjectInfo) extends DefaultSubProject(info, distPath) {
-    val apache_httpclient = Dependencies.apache_httpclient % "compile"
-    val apache_httpcore = Dependencies.apache_httpcore     % "compile"
-    val commonsIO = Dependencies.commons_io                % "compile"
-    val fastutil = Dependencies.fastutil                   % "compile"
-    val hc = Dependencies.heritrixCommons                  % "compile"
-    val he = Dependencies.heritrixEngine                   % "compile"
-    val hm = Dependencies.heritrixModules                  % "compile"
-    val json = Dependencies.json                           % "compile"
-    val mongoj = Dependencies.mongoj                       % "compile"
-    val mongos = Dependencies.mongos                       % "compile"
-    val mongridfs = Dependencies.mongridfs                 % "compile"
-    val acsCommons = Dependencies.acsCommons                % "compile"
-    val tagsoup = Dependencies.tagsoup                     % "compile"
-    val spring_context = Dependencies.spring_context       % "compile"
-    val spring_core = Dependencies.spring_core             % "compile"
-  }
-
-  lazy val robotRulesParser     = project("robot-rules-parser", "robot-rules-parser", new RobotRulesParserProject(_))
-  class RobotRulesParserProject(info: ProjectInfo) extends DefaultSubProject(info, distPath) {
-    val log4j = Dependencies.log4j % "compile;runtime;test"
+  lazy val heritrixPlugins               = project("heritrix-plugins", "heritrix-plugins", new HeritrixPlugins(_))
+  class HeritrixPlugins(info: ProjectInfo) extends DefaultSubProject(info, distPath) {
+    val hc = Dependencies.heritrixCommons                  % "compile;"
+    val he = Dependencies.heritrixEngine                   % "compile;"
+    val hm = Dependencies.heritrixModules                  % "compile;"
+    val spring_context = Dependencies.spring_context       % "compile;"
+    val spring_core = Dependencies.spring_core             % "compile;"
+    val apache_httpclient = Dependencies.apache_httpclient % "compile;runtime"
+    val apache_httpcore = Dependencies.apache_httpcore     % "compile;runtime"
+    val commons_io = Dependencies.commons_io               % "compile;runtime"
+    val commons_exec = Dependencies.commons_exec           % "compile;runtime"
+    val fastutil = Dependencies.fastutil                   % "compile;runtime"
+    val json = Dependencies.json                           % "compile;runtime"
+    val mongoj = Dependencies.mongoj                       % "compile;runtime"
+    val mongos = Dependencies.mongos                       % "compile;runtime"
+    val mongridfs = Dependencies.mongridfs                 % "compile;runtime"
+    val tagsoup = Dependencies.tagsoup                     % "compile;runtime"
+    val junit = Dependencies.junit
+    val scalatest = Dependencies.scalatest
   }
 
   lazy val tonysOptionExercises = project("tonys-option-exercises", "tonys-option-exercises", new TonysOptionExercisesProject(_))
@@ -329,21 +326,12 @@ class MetaProject(info: ProjectInfo) extends DefaultProject(info) {
 
     val junit = Dependencies.junit
     val scalatest = Dependencies.scalatest
-
-    override def managedStyle = ManagedStyle.Maven
-    lazy val publishTo = "Releases" at "http://iesl.cs.umass.edu:8081/nexus/content/repositories/releases/"
-    Credentials.add("", "iesl.cs.umass.edu:8081", "deployment", "bkxEMjoW")
   }
 
   lazy val acsCommonsProject = project("acs-commons", "acs-commons", new AcsCommonsProject(_))
   class AcsCommonsProject(info: ProjectInfo) extends DefaultSubProject(info, distPath) {
     val scalatest = Dependencies.scalatest
     val junit = Dependencies.junit
-    // publish options
-    override def managedStyle = ManagedStyle.Maven
-    val publishTo = "IESL Internal Repo" at "http://iesl.cs.umass.edu:8081/nexus/content/repositories/snapshots"
-    // Credentials.add("ieslnexus", "iesl.cs.umass.edu:8081", "deployment", "bkxEMjoW")
-    Credentials.add("", "iesl.cs.umass.edu:8081", "deployment", "bkxEMjoW")
   }
 
   lazy val liftoff = project("liftoff", "liftoff", new Liftoff(_))

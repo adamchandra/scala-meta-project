@@ -34,12 +34,7 @@ object MongoDB {
   val aliasMC = mongodb.getCollection("pdfAliases") asScala
   lazy val gridfs: GridFS = new GridFS(mongodb, collection)
 
-  def containsSha(sha1: String): Boolean = {
-    maybe(gridfs.findOne(sha1)) match {
-      case Some(f) => true
-      case None => false
-    }
-  }
+  def containsSha(sha1: String): Boolean = gridfs.findOne(sha1) != null
 
   import com.osinka.mongodb._
   import org.bson.types.ObjectId
