@@ -20,17 +20,19 @@ object ShellCommands {
     runcommand("file", 10*1000, "-bzi", filename)(0)
   }
 
-  val compressTypes = wsv("x-gzip x-bzip2 x-compress")
-  val uncompressors = List(os_gunzip _, os_bunzip2 _, os_decompress _)
-
-  def uncompressor(t:String):Option[Function1[String, Unit]] = compressionType(t) map { x => uncompressors( x ) } 
-
+  def uncompressor(t:String): Option[Function1[String, Unit]] = compressionType(t) match {
+    case Some(n:Int) => Some(List(os_gunzip _, os_bunzip2 _, os_decompress _)(n))
+    case None  => None
+  }
+  
   def compressionType(t:String):Option[Int] = {
+    val compressTypes = wsv("x-gzip x-bzip2 x-compress")
     val ext = compressTypes.find(t.contains(_))
     val i = compressTypes.indexOf(ext)
     if (i > -1) Some(i)
     else        None
   }
+
   def isCompressed(filetype: String) = compressionType(filetype).isDefined
 
   def os_gzip(filename: String) = {
@@ -38,17 +40,17 @@ object ShellCommands {
     FileUtils.moveFile(file(filename + ".gz"), file(filename))
   }
 
-  def os_gunzip(filename: String) = {
+  def os_gunzip(filename: String):Unit = {
     FileUtils.moveFile(file(filename), file(filename+".gz"))
     runcommand("gunzip", 10*1000, "-fq", filename+".gz")
   }
 
-  def os_bunzip2(filename: String) = {
+  def os_bunzip2(filename: String):Unit = {
     FileUtils.moveFile(file(filename), file(filename+".bz2"))
     runcommand("bunzip2", 10*1000, "-fq", filename+".bz2")
   }
 
-  def os_decompress(filename: String) = {
+  def os_decompress(filename: String):Unit = {
     FileUtils.moveFile(file(filename), file(filename+".gz"))
     runcommand("gunzip", 10*1000, "-fqd", filename+".gz")
   }
@@ -57,8 +59,6 @@ object ShellCommands {
     var filetype = os_file(filename)
     while (isCompressed(filetype)) {
       log.info("inflating file " + filename)
-      // uncompressor(filetype) andThen file
-      // os_gunzip(filename)
       filetype = os_file(filename)
     }
   }
