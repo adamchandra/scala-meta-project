@@ -238,69 +238,26 @@ trait Knapsack {
   def item(t: (Int, Int)) = Item(t._1, t._2)
 }
 
-case class Matrixx(rows: Int, cols: Int) {
-  var m: mut.Map[Int, mut.Map[Int, Int]] = mut.Map()
-  var maxVal = 0 // keep track for toString pretty printing
-  // var a = Array.ofDim(rows, cols)
-  (0 to rows - 1) foreach { row =>
-    m(row) = mut.Map()
-    (0 to cols - 1) foreach { col =>
-      m(row)(col) = 0
-    }
-  }
-
-  def getOrElse(row: Int, col: Int, v: Int): Int = {
-    try { m(row)(col) }
-    catch { case e: Exception => v }
-  }
-
-  def apply(row: Int, col: Int) = m(row)(col)
-  def update(row: Int, col: Int, n: Int) = {
-    m(row)(col) = n
-    maxVal = math.max(maxVal, n)
-  }
-
-  override def toString = {
-    def width(i: Int) = ("" + i).length
-    val colwidth = width(maxVal)
-    var str = ""
-    for (x <- 0 to rows - 1) {
-      for (y <- 0 to cols - 1) 
-        str += (" " * (1 + colwidth - width(this(x,y)))) + this(x,y)
-      str += "\n"
-    }
-    str
-  }
-
-}
-
 case class Matrix(rows: Int, cols: Int) {
   var m = Array.ofDim[Int](rows, cols)
-  var maxVal = 0 // keep track for toString pretty printing
 
-  def getOrElse(row: Int, col: Int, v: Int): Int = {
+  def getOrElse(row: Int, col: Int, v: Int): Int = 
     try { m(row)(col) }
     catch { case e: Exception => v }
-  }
 
   def apply(row: Int, col: Int) = m(row)(col)
-  def update(row: Int, col: Int, n: Int) = {
-    m(row)(col) = n
-    maxVal = math.max(maxVal, n)
-  }
+  def update(row: Int, col: Int, n: Int) = m(row)(col) = n
 
-  override def toString = {
-    def width(i: Int) = ("" + i).length
-    val colwidth = width(maxVal)
-    var str = ""
-    for (x <- 0 to rows - 1) {
-      for (y <- 0 to cols - 1) 
-        str += (" " * (1 + colwidth - width(this(x,y)))) + this(x,y)
-      str += "\n"
-    }
-    str
-  }
+  lazy val maxval = m.foldLeft(0) {(max, m2) =>
+    m2.foldLeft(max) {(max2, v) => math.max(max2, v)}}
 
+  lazy val colwidth = nwidth(maxval) + 1
+  def nwidth(n: Int) = ("" + n).length
+  def pad(n:Int) = " " * (colwidth - nwidth(n))
+
+  override def toString = m.foldLeft("") {(str, m2) =>
+    m2.foldLeft(str+"\n") {(mstr, v) =>         
+      mstr + pad(v) + v}}
 }
 
 object Knapsack01 extends Knapsack {
@@ -327,7 +284,7 @@ object Knapsack01 extends Knapsack {
     while (row > 0) {
       if (m(row, col) != m(row - 1, col)) {
         l = l :+ items(row - 1)
-        col - items(row - 1).size
+        col -= items(row - 1).size
       }
       row -= 1
     }
