@@ -29,7 +29,7 @@ class GridFSUI(options: Map[String, List[String]]) {
   import com.mongodb.Mongo
 
   def dbname = options("db").head
-  def collection = "corpus." + options("collection").head
+  def collection = options("collection").head
   def mongodb = new Mongo().getDB(dbname)
   lazy val gridfs: GridFS = new GridFS(mongodb, collection)
   lazy val corpus = new Corpus(dbname)

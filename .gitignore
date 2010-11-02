@@ -93,3 +93,9 @@ hs_err_*
 
 
 lift_proto.db.h2.db
+
+heritrix-plugins/crawl-profiles/**/*.log
+heritrix-plugins/crawl-profiles/**/*.dump
+heritrix-plugins/crawl-profiles/**/logs/
+heritrix-plugins/crawl-profiles/**/scratch/
+heritrix-plugins/crawl-profiles/**/state/

@@ -37,14 +37,12 @@ class PdfWriter extends Processor {
   }
 
   def writePdfStream(curi: CrawlURI):Unit = {
-    curi.getUURI.getScheme.toLowerCase match {
-      case "http" | "https" => {
-        val recis:RecordingInputStream = curi.getRecorder().getRecordedInput();
-        if (0L > recis.getResponseContentLength()) {
-          log.info("writing pdf " + curi.getUURI())
-          MongoDB.put(recis)
-        }
-      }
+    // curi.getUURI.getScheme.toLowerCase match {
+    // case "http" | "https" => {
+    val recis:RecordingInputStream = curi.getRecorder().getRecordedInput();
+    if (0L < recis.getResponseContentLength()) {
+      log.info("writing pdf " + curi.getUURI())
+      MongoDB.put(curi)
     }
   }
 
@@ -64,7 +62,5 @@ class PdfWriter extends Processor {
       MongoDB.put("mirror/" + f)
     }
   }
-
-
 }
 
