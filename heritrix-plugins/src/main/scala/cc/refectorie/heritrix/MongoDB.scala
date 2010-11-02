@@ -78,6 +78,20 @@ object MongoDB {
     }
   }
 
+  import org.archive.io.RecordingInputStream
+  import org.archive.io.ReplayInputStream
+  import java.io.InputStream
+
+  def put(recis:RecordingInputStream):Unit = {
+    val sha1 = ShellCommands.sha1sum(recis.getReplayInputStream)
+    if (containsSha(sha1))
+      println("duplicate file sha: " + sha1)
+    else {
+      val gf = gridfs.createFile(recis.getReplayInputStream, sha1)
+      gf.save()
+    }
+  }
+
   def dropDatabase: Unit = dropDatabase(dbname)
 
   def dropDatabase(dbn: String): Unit = {

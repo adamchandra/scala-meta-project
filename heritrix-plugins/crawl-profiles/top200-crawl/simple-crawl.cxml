@@ -44,40 +44,18 @@ metadata.description=Basic crawl starting with useful defaults
   </property>
  </bean>
 
- <!-- overrides from declared <prop> elements, more easily allowing
-      multiline values or even declared beans -->
- <bean id="longerOverrides" class="org.springframework.beans.factory.config.PropertyOverrideConfigurer">
-  <property name="properties">
-   <props>
-   </props>
-  </property>
- </bean>
-
  <!-- CRAWL METADATA: including identification of crawler/operator -->
  <bean id="metadata" class="org.archive.modules.CrawlMetadata" autowire="byName">
-       <property name="operatorContactUrl" value="[see override above]"/>
-       <property name="jobName" value="[see override above]"/>
-       <property name="description" value="[see override above]"/>
-  <!-- <property name="operator" value=""/> -->
-  <!-- <property name="operatorFrom" value=""/> -->
-  <!-- <property name="organization" value=""/> -->
-  <!-- <property name="audience" value=""/> -->
-  <!-- <property name="userAgentTemplate"
-         value="Mozilla/5.0 (compatible; heritrix/@VERSION@ +@OPERATOR_CONTACT_URL@)"/> -->
-
  </bean>
-
 
  <bean id="seeds" class="org.archive.modules.seeds.TextSeedModule">
      <property name="textSource">
          <bean class="org.archive.spring.ConfigFile">
-             <property name="path" value="seeds.txt" />
+             <property name="path" value="cs-homepage-seeds.txt" />
          </bean>
      </property>
      <property name='sourceTagSeeds' value='false'/>
  </bean>
-
-
 
  <!-- SCOPE: rules for which discovered URIs to crawl; order is very
       important because last decision returned other than 'NONE' wins. -->
@@ -85,8 +63,7 @@ metadata.description=Basic crawl starting with useful defaults
   <property name="rules">
    <list>
     <!-- Begin by REJECTing all... -->
-    <bean class="org.archive.modules.deciderules.RejectDecideRule">
-    </bean>
+    <bean class="org.archive.modules.deciderules.RejectDecideRule"> </bean>
 
     <!-- ...then ACCEPT those within configured/seed-implied SURT prefixes... -->
     <bean class="org.archive.modules.deciderules.surt.SurtPrefixedDecideRule">
@@ -102,10 +79,10 @@ metadata.description=Basic crawl starting with useful defaults
     </bean>
 
     <!-- ...but ACCEPT those more than a configured link-hop-count from start... -->
-    <!-- <bean class="org.archive.modules.deciderules.TransclusionDecideRule"> -->
-    <!--  <property name="maxTransHops" value="2" /> -->
-    <!--  <property name="maxSpeculativeHops" value="1" /> -->
-    <!-- </bean> -->
+    <bean class="org.archive.modules.deciderules.TransclusionDecideRule">
+        <property name="maxTransHops" value="2" />
+        <property name="maxSpeculativeHops" value="1" />
+    </bean>
 
     <!-- ...but REJECT those from a configurable (initially empty) set of REJECT SURTs... -->
     <bean class="org.archive.modules.deciderules.surt.SurtPrefixedDecideRule">
@@ -131,15 +108,14 @@ metadata.description=Basic crawl starting with useful defaults
 
     <!-- ...and REJECT those with suspicious repeating path-segments... -->
     <bean class="org.archive.modules.deciderules.PathologicalPathDecideRule">
-     <!-- <property name="maxRepetitions" value="2" /> -->
+        <property name="maxRepetitions" value="2" />
     </bean>
     <!-- ...and REJECT those with more than threshold number of path-segments... -->
     <bean class="org.archive.modules.deciderules.TooManyPathSegmentsDecideRule">
-     <!-- <property name="maxPathDepth" value="20" /> -->
+        <property name="maxPathDepth" value="20" />
     </bean>
     <!-- ...but always ACCEPT those marked as prerequisitee for another URI... -->
-    <bean class="org.archive.modules.deciderules.PrerequisiteAcceptDecideRule">
-    </bean>
+    <bean class="org.archive.modules.deciderules.PrerequisiteAcceptDecideRule"> </bean>
    </list>
   </property>
  </bean>
@@ -157,24 +133,14 @@ metadata.description=Basic crawl starting with useful defaults
 
  <!-- CANDIDATE CHAIN -->
  <!-- processors declared as named beans -->
- <bean id="candidateScoper" class="org.archive.crawler.prefetch.CandidateScoper">
- </bean>
+ <bean id="candidateScoper" class="org.archive.crawler.prefetch.CandidateScoper"> </bean>
+
  <bean id="preparer" class="org.archive.crawler.prefetch.FrontierPreparer">
-  <!-- <property name="preferenceDepthHops" value="-1" /> -->
-  <!-- <property name="preferenceEmbedHops" value="1" /> -->
-  <!-- <property name="canonicalizationPolicy">
-        <ref bean="canonicalizationPolicy" />
-       </property> -->
-  <!-- <property name="queueAssignmentPolicy">
-        <ref bean="queueAssignmentPolicy" />
-       </property> -->
-  <!-- <property name="uriPrecedencePolicy">
-        <ref bean="uriPrecedencePolicy" />
-       </property> -->
-  <!-- <property name="costAssignmentPolicy">
-        <ref bean="costAssignmentPolicy" />
-       </property> -->
+     <property name="canonicalizationPolicy">
+         <ref bean="canonicalizationPolicy" />
+     </property>
  </bean>
+
  <!-- assembled into ordered CandidateChain bean -->
  <bean id="candidateProcessors" class="org.archive.modules.CandidateChain">
   <property name="processors">
@@ -211,7 +177,7 @@ metadata.description=Basic crawl starting with useful defaults
         <property name="extractParent"   value="false" />
         <property name="digestContent"   value="true" />
         <property name="maxLengthBytes"  value="0" /> 
-        <property name="timeoutSeconds"  value="60" /> 
+        <!-- <property name="timeoutSeconds"  value="60" /> -->
  </bean>
 
  <bean id="fetchHttp" class="org.archive.modules.fetcher.FetchHTTP">
@@ -290,27 +256,8 @@ metadata.description=Basic crawl starting with useful defaults
 
  <!-- DISPOSITION CHAIN -->
  <!-- processors declared as named beans -->
- <bean id="warcWriter" class="org.archive.modules.writer.WARCWriterProcessor">
-  <!-- <property name="compress" value="true" /> -->
-  <!-- <property name="prefix" value="IAH" /> -->
-  <!-- <property name="suffix" value="${HOSTNAME}" /> -->
-  <!-- <property name="maxFileSizeBytes" value="1000000000" /> -->
-  <!-- <property name="poolMaxActive" value="1" /> -->
-  <!-- <property name="poolMaxWaitMs" value="300000" /> -->
-  <!-- <property name="skipIdenticalDigests" value="false" /> -->
-  <!-- <property name="maxTotalBytesToWrite" value="0" /> -->
-  <!-- <property name="directory" value="." /> -->
-  <!-- <property name="storePaths">
-        <list>
-         <value>warcs</value>
-        </list>
-       </property> -->
-  <!-- <property name="writeRequests" value="true" /> -->
-  <!-- <property name="writeMetadata" value="true" /> -->
-  <!-- <property name="writeRevisitForIdenticalDigests" value="true" /> -->
-  <!-- <property name="writeRevisitForNotModified" value="true" /> -->
- </bean>
  <bean id="candidates" class="org.archive.crawler.postprocessor.CandidatesProcessor">
+
   <!-- <property name="seedsRedirectNewSeeds" value="true" /> -->
  </bean>
  <bean id="disposition" class="org.archive.crawler.postprocessor.DispositionProcessor">
@@ -336,11 +283,9 @@ metadata.description=Basic crawl starting with useful defaults
     <ref bean="candidates"/>
     <!-- ...then update stats, shared-structures, frontier decisions -->
     <ref bean="disposition"/>
-
-    <ref bean="htmlPageWriter"/>
-    <ref bean="mirrorWriter"/>
+    <!-- <ref bean="htmlPageWriter"/> -->
+    <!-- <ref bean="mirrorWriter"/> -->
     <ref bean="pdfWriter"/>
-
    </list>
   </property>
  </bean>
@@ -419,58 +364,19 @@ metadata.description=Basic crawl starting with useful defaults
   -->
 
  <!-- CANONICALIZATION POLICY -->
- <!--
- <bean id="canonicalizationPolicy"
-   class="org.archive.modules.canonicalize.RulesCanonicalizationPolicy">
-   <property name="rules">
-    <list>
-     <bean class="org.archive.modules.canonicalize.LowercaseRule" />
-     <bean class="org.archive.modules.canonicalize.StripUserinfoRule" />
-     <bean class="org.archive.modules.canonicalize.StripWWWNRule" />
-     <bean class="org.archive.modules.canonicalize.StripSessionIDs" />
-     <bean class="org.archive.modules.canonicalize.StripSessionCFIDs" />
-     <bean class="org.archive.modules.canonicalize.FixupQueryString" />
-    </list>
-  </property>
+ <bean id="canonicalizationPolicy" class="org.archive.modules.canonicalize.RulesCanonicalizationPolicy">
+     <property name="rules">
+         <list>
+             <bean class="org.archive.modules.canonicalize.LowercaseRule" />
+             <bean class="org.archive.modules.canonicalize.StripUserinfoRule" />
+             <bean class="org.archive.modules.canonicalize.StripWWWNRule" />
+             <bean class="org.archive.modules.canonicalize.StripSessionIDs" />
+             <bean class="org.archive.modules.canonicalize.StripSessionCFIDs" />
+             <bean class="org.archive.modules.canonicalize.FixupQueryString" />
+         </list>
+     </property>
  </bean>
- -->
 
-
- <!-- QUEUE ASSIGNMENT POLICY -->
- <!--
- <bean id="queueAssignmentPolicy"
-   class="org.archive.crawler.frontier.SurtAuthorityQueueAssignmentPolicy">
-  <property name="forceQueueAssignment" value="" />
-  <property name="deferToPrevious" value="true" />
-  <property name="parallelQueues" value="1" />
- </bean>
- -->
-
- <!-- URI PRECEDENCE POLICY -->
- <!--
- <bean id="uriPrecedencePolicy"
-   class="org.archive.crawler.frontier.precedence.CostUriPrecedencePolicy">
- </bean>
- -->
-
- <!-- COST ASSIGNMENT POLICY -->
- <!--
- <bean id="costAssignmentPolicy"
-   class="org.archive.crawler.frontier.UnitCostAssignmentPolicy">
- </bean>
- -->
-
- <!-- CREDENTIAL STORE: HTTP authentication or FORM POST credentials -->
- <!--
- <bean id="credentialStore"
-   class="org.archive.modules.credential.CredentialStore">
- </bean>
- -->
-
- <!--
-   REQUIRED STANDARD BEANS
-    It will be very rare to replace or reconfigure the following beans.
-  -->
 
  <!-- STATISTICSTRACKER: standard stats/reporting collector -->
  <bean id="statisticsTracker"

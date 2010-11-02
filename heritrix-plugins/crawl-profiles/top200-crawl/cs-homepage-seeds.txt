@@ -1,51 +1,3 @@
-http://www1.cs.ucr.edu/
-http://www.usd.edu/csci/
-http://www.unf.edu/ccec/cis/
-http://www.uncg.edu/cmp/
-http://www.uml.edu/college/arts_sciences/cs/default.html
-http://www.umassd.edu/engineering/cis/
-http://www.temple.edu/cis/
-http://www.southernct.edu/undergrad/schcomm/CSC/
-http://www.selu.edu/acad_research/depts/cs_it/index.html
-http://www.sci.csueastbay.edu/mathcs/
-http://www.rmit.edu.au/compsci
-http://www.ohio.edu/eecs/index.cfm
-http://www.ogi.edu/csee/
-http://www.nps.navy.mil/cs/index.htm
-http://www.neiu.edu/~compsc/
-http://www.mtsu.edu/~csdept/
-http://www.modern-academy.edu.eg/mam/index.htm
-http://www.mcs.utulsa.edu/cs/
-http://www.louisiana.edu/Academic/Sciences/CMPS/
-http://www.lcs.syr.edu/academic/dept_electricalengcompsci/index.aspx
-http://www.latech.edu/coes/computer-science/
-http://www.jsums.edu/%7Esst/cset/computerscience.htm
-http://www.isu.edu/engineer/cs/
-http://www.ist.unomaha.edu/
-http://www.inf.uniri.hr/
-http://www.ics.uci.edu/computerscience/
-http://www.howard.edu/ceacs/departments/compsci/default.htm
-http://www.hamptonu.edu/academics/schools/science/comp_sci/
-http://www.ewu.edu/x3364.xml
-http://www.eng.fsu.edu/departments/electrical_and_computer/
-http://www.eng.auburn.edu/comp/
-http://www.egr.vcu.edu/cs/index.html
-http://www.eecs.northwestern.edu/
-http://www.eecs.mit.edu/
-http://www.eecs.ku.edu/
-http://www.eecs.harvard.edu/index/cs/cs_index.php
-http://www.eecs.case.edu/
-http://www.eecs.berkeley.edu/
-http://www.ecs.baylor.edu/computer_science/
-http://www.eas.muohio.edu/csa/
-http://www.dbu.edu/math_science/computer_science.asp
-http://www.d.umn.edu/cs/
-http://www.csulb.edu/colleges/coe/cecs/
-http://www.csee.usf.edu/
-http://www.cse.uta.edu/
-http://www.cse.unr.edu/
-http://www.cse.uconn.edu/
-http://www.cse.secs.oakland.edu/
 http://144.96.100.120/csc/index.html
 http://appserv.pace.edu/execute/page.cfm?doc_id=16399
 http://bit.csc.lsu.edu/
@@ -213,3 +165,100 @@ http://www.cse.nd.edu/
 http://www.cse.ohio-state.edu/
 http://www.cse.psu.edu/
 http://www.cse.sc.edu/
+
+# Heritrix added seed redirect from http://eecs.evansville.edu/.
+http://eecs.evansville.edu/Default.htm
+# Heritrix added seed redirect from http://eecs.evansville.edu/.
+http://eecs.evansville.edu/HOME
+# Heritrix added seed redirect from http://cs.byu.edu/.
+https://cs.byu.edu/
+# Heritrix added seed redirect from http://appserv.pace.edu/execute/page.cfm?doc_id=16399.
+http://www.pace.edu/page.cfm?doc_id=16399
+# Heritrix added seed redirect from http://ite.gmu.edu/.
+http://volgenau.gmu.edu/
+# Heritrix added seed redirect from http://engr.smu.edu/cse/.
+http://lyle.smu.edu/cse/
+# Heritrix added seed redirect from http://louisville.edu/speed/cecs/new_web/index.shtml.
+http://louisville.edu/speed/computer/
+# Heritrix added seed redirect from http://cs.pvamu.edu/.
+http://cs.pvamu.edu/index.htm
+# Heritrix added seed redirect from http://www.cs.binghamton.edu/.
+http://www2.binghamton.edu/watson/programs/academic-departments/computer-science/index.html
+# Heritrix added seed redirect from http://www.cens.nau.edu/Academic/CS/.
+http://www.cefns.nau.edu/Academic/CS/
+# Heritrix added seed redirect from http://www.coc.gatech.edu/.
+http://www.cc.gatech.edu/
+# Heritrix added seed redirect from http://compsci.sdstate.edu/.
+http://www.sdstate.edu/eecs/cs/index.cfm
+# Heritrix added seed redirect from http://math.scu.edu/index.shtml.
+http://www.scu.edu/cas/math
+# Heritrix added seed redirect from http://www.cs.kent.edu/department/index.html.
+http://www.kent.edu/cas/cs/
+# Heritrix added seed redirect from http://www.cs.mercer.edu/new/.
+http://www.cs.mercer.edu/new/MainNew.html
+# Heritrix added seed redirect from http://sdmines.sdsmt.edu/sdsmt/department/math.
+http://mathcs.sdsmt.edu/
+# Heritrix added seed redirect from http://www.cs.iit.edu/.
+http://www.iit.edu/csl/cs/
+# Heritrix added seed redirect from http://www.cs.indiana.edu/.
+http://www.soic.indiana.edu/
+# Heritrix added seed redirect from http://technologize.ualr.edu/computerscience/.
+http://ualr.edu/computerscience
+# Heritrix added seed redirect from http://technologize.ualr.edu/computerscience/.
+http://technologize.ualr.edu/computerscience/index.html
+# Heritrix added seed redirect from http://www.cast.ilstu.edu/itk/.
+http://cast.illinoisstate.edu/itk/
+# Heritrix added seed redirect from http://www.cs.niu.edu/.
+http://www.cs.niu.edu/index.shtml
+# Heritrix added seed redirect from http://www.cs.missouristate.edu/.
+http://computerscience.missouristate.edu/
+# Heritrix added seed redirect from http://www.cs.stevens.edu/.
+http://www.stevens.edu/compsci
+# Heritrix added seed redirect from http://www.cs.siu.edu/.
+http://www.cs.siu.edu/index.shtml
+# Heritrix added seed redirect from http://www.cs.umb.edu/.
+http://www.cs.umb.edu/www/
+# Heritrix added seed redirect from http://cs.nku.edu/.
+http://informatics.nku.edu/csc/
+# Heritrix added seed redirect from http://www.cs.reading.ac.uk/.
+http://www.reading.ac.uk/csi/
+# Heritrix added seed redirect from http://www.cs.poly.edu/.
+http://www.poly.edu/cse
+# Heritrix added seed redirect from http://www.cs.colostate.edu/.
+http://www.cs.colostate.edu/cstop/index.html
+# Heritrix added seed redirect from http://www.cs.cornell.edu/.
+http://www.cs.cornell.edu/index.htm
+# Heritrix added seed redirect from http://www.cs.uiuc.edu/.
+http://cs.illinois.edu/
+# Heritrix added seed redirect from http://science.kennesaw.edu/csis/.
+http://csis.kennesaw.edu/
+# Heritrix added seed redirect from http://www.cs.uidaho.edu/.
+http://www.uidaho.edu/engr/cs/
+# Heritrix added seed redirect from http://www.cs.utdallas.edu/.
+http://cs.utdallas.edu/
+# Heritrix added seed redirect from http://eecs.evansville.edu/Default.htm.
+http://eecs.evansville.edu/HOME
+# Heritrix added seed redirect from http://www.cs.usc.edu/.
+http://www.cs.usc.edu/default.html
+# Heritrix added seed redirect from http://www.cs.mercer.edu/new/MainNew.html.
+http://www.cs.mercer.edu/new/MainNew.html
+# Heritrix added seed redirect from http://technologize.ualr.edu/computerscience/index.html.
+http://ualr.edu/computerscience
+# Heritrix added seed redirect from http://eecs.evansville.edu/HOME.
+http://eecs.evansville.edu/HOME/
+# Heritrix added seed redirect from http://www.pace.edu/page.cfm?doc_id=16399.
+http://web.pace.edu/page.cfm?doc_id=16399
+# Heritrix added seed redirect from http://www.cs.ou.edu/.
+http://www.ou.edu/coe/cs.html
+# Heritrix added seed redirect from http://www.scu.edu/cas/math.
+http://www.scu.edu/cas/math/
+# Heritrix added seed redirect from http://mathcs.sdsmt.edu/.
+http://mathcs.sdsmt.edu/engine/cache/mathcs-sdsmt-edu/Anonymous855.html
+# Heritrix added seed redirect from http://ualr.edu/computerscience.
+http://ualr.edu/computerscience/
+# Heritrix added seed redirect from http://computerscience.missouristate.edu/.
+http://computerscience.missouristate.edu/Default.htm
+# Heritrix added seed redirect from http://mathcs.sdsmt.edu/engine/cache/mathcs-sdsmt-edu/Anonymous855.html.
+http://mathcs.sdsmt.edu/engine/cache/mathcs-sdsmt-edu/engine/cache/mathcs-sdsmt-edu/Anonymous855/Anonymous1.html
+# Heritrix added seed redirect from http://www.poly.edu/cse.
+http://www.poly.edu/academics/departments/computer/?old=/cse

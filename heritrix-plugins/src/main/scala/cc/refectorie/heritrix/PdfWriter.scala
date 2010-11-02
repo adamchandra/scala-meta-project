@@ -11,6 +11,9 @@ import org.archive.modules.{ Processor, CrawlURI }
 import scala.collection.JavaConversions._
 import Utils._
 import cc.acs.commons.util.StringOps.wsv
+import org.archive.io.RecordingInputStream
+import org.archive.io.ReplayInputStream
+
 
 class PdfWriter extends Processor {
   val log = Logger.getLogger(classOf[PdfWriter].getName)
@@ -26,13 +29,22 @@ class PdfWriter extends Processor {
 
   def innerProcess(curi: CrawlURI): Unit = {
     if (curi.getFetchStatus() == 200)
-      writePdf(curi)
+      writePdfStream(curi)
     else
       log.info("fetch status was " + curi.getFetchStatus() + " for " + curi)
 
-    getMirrorFile(curi).foreach { f =>
-      log.info("deleting file " + f.getPath)
-      f.delete
+    // getMirrorFile(curi).foreach (_.delete)
+  }
+
+  def writePdfStream(curi: CrawlURI):Unit = {
+    curi.getUURI.getScheme.toLowerCase match {
+      case "http" | "https" => {
+        val recis:RecordingInputStream = curi.getRecorder().getRecordedInput();
+        if (0L > recis.getResponseContentLength()) {
+          log.info("writing pdf " + curi.getUURI())
+          MongoDB.put(recis)
+        }
+      }
     }
   }
 
@@ -42,11 +54,9 @@ class PdfWriter extends Processor {
   def getMirrorFile(curi: CrawlURI): Option[File] =
     getMirrorPath(curi) map { p => file("mirror/" + p) }
 
-  def writePdf(curi: CrawlURI): Unit = {
-    // normalize file to gzip'd, collecting 
-    //   sha1 aliases along the way
+  def writePdfFile(curi: CrawlURI): Unit = {
+    // normalize file to gzip'd, collecting sha1 aliases along the way
     getMirrorFile(curi).foreach { f =>
-      log.info("normalizing " + f.getPath)
       val shas = ShellCommands.normalizePdf(f.getPath)
       // shas contains all sha hashes for zip'd versions of file
       MongoDB.upsertPdfAliases(shas)
@@ -54,5 +64,7 @@ class PdfWriter extends Processor {
       MongoDB.put("mirror/" + f)
     }
   }
+
+
 }
 

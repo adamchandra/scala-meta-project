@@ -11,6 +11,7 @@ then
     exit
 fi
 
+cp ../project/boot/scala-$SCALA_VERSION/lib/*.jar $HERITRIX_HOME/lib/
 cp -f target/scala_$SCALA_VERSION/heritrix-plugins_$SCALA_VERSION-0.1.jar $HERITRIX_HOME/lib/
 cp -f lib_managed/scala_$SCALA_VERSION/runtime/*.jar $HERITRIX_HOME/lib/
 cp -f src/main/scripts/* $HERITRIX_HOME/bin
